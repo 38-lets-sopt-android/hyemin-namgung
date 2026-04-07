@@ -245,12 +245,9 @@ private fun isVerifySignUp(
         Regex("^[A-Za-z0-9](?:[A-Za-z0-9._%+-]*[A-Za-z0-9])?@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\\.[A-Za-z]{2,}$")
     val passwordRegex = Regex("^.{8,12}$")
 
-    if (
-        emailRegex.matches(emailText) &&
-        passwordRegex.matches(pwText) &&
-        pwText == confirmPwText
-    ) return true
-    else return false
+    return emailRegex.matches(emailText) &&
+    passwordRegex.matches(pwText) &&
+    pwText == confirmPwText
 }
 
 @Preview(showBackground = true)
