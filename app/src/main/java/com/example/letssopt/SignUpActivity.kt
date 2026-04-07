@@ -15,10 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,13 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.letssopt.ui.theme.LETSSOPTColors
 import com.example.letssopt.ui.theme.LETSSOPTTheme
+import com.example.letssopt.ui.theme.LocalLETSSOPTTypography
+import com.example.letssopt.ui.theme.typography
 import kotlinx.coroutines.launch
 
 
@@ -45,7 +43,7 @@ class SignUpActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LETSSOPTTheme {
-                    SignUpScreen()
+                SignUpScreen()
             }
         }
     }
@@ -61,10 +59,11 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
     var pwText by remember { mutableStateOf("") }
     var confirmPwText by remember { mutableStateOf("") }
 
-    val  isButtonEnabled = emailText.isNotBlank() && pwText.isNotBlank() && confirmPwText.isNotBlank()
+    val isButtonEnabled =
+        emailText.isNotBlank() && pwText.isNotBlank() && confirmPwText.isNotBlank()
 
-
-    Scaffold (
+    val typography = LocalLETSSOPTTypography.current
+    Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
@@ -72,7 +71,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .background(color = Color(0xFF141414))
+                .background(color = LETSSOPTColors.Background)
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp)
 
@@ -83,13 +82,8 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 text = "watcha",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = TextStyle(
-                    color = Color(0xFFE8003C),
-                    fontSize = 36.sp,
-                    fontWeight = FontWeight(
-                        700
-                    )
-                )
+                style = typography.logo,
+                color = LETSSOPTColors.PrimaryRed
             )
 
             Spacer(Modifier.weight(26f))
@@ -97,11 +91,8 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             Text(
                 text = "회원가입",
                 modifier = Modifier.fillMaxWidth(),
-                style = TextStyle(
-                    color = Color(0xFFFFFFFF),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight(700)
-                )
+                style = typography.h2,
+                color = LETSSOPTColors.TextPrimary
             )
 
             Spacer(Modifier.weight(36f))
@@ -133,7 +124,6 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 placeholder = "비밀번호를 다시 입력해주세요"
             )
 
-
             Spacer(Modifier.weight(280f))
 
             Button(
@@ -154,24 +144,23 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                         }
                     }
                 },
+                modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
                 enabled = isButtonEnabled,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFE8003C),
-                    disabledContainerColor = Color(0xFF353535),
-                    contentColor = Color.White,
-                    disabledContentColor = Color(0xFF999999)
+                    containerColor = LETSSOPTColors.PrimaryRed,
+                    disabledContainerColor = LETSSOPTColors.Disabled,
+                    contentColor = LETSSOPTColors.TextPrimary,
+                    disabledContentColor = LETSSOPTColors.Placeholder,
                 )
             ) {
                 Text(
                     text = "회원가입",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight(700),
-                        color = Color(0xFFFFFFFF),
-                    )
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 131.dp, top = 17.dp, end = 130.dp, bottom = 16.dp),
+                    color = LETSSOPTColors.TextPrimary, // 여기 색상 두가지로 난누깅
+                    style = typography.body,
                 )
             }
 
@@ -198,10 +187,9 @@ private fun AuthTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 3.dp),
-            style = TextStyle(
-                color = Color(0xFF999999), fontSize = 14.sp,
-                fontWeight = FontWeight(400)
-            )
+
+            style = typography.caption,
+            color = LETSSOPTColors.TextSecondary
         )
 
         TextField(
@@ -210,25 +198,25 @@ private fun AuthTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = Color(0xFF2A2A2A),
+                    color = LETSSOPTColors.Surface,
                     shape = RoundedCornerShape(8.dp)
                 ),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFF2A2A2A),
-                unfocusedContainerColor = Color(0xFF2A2A2A),
-                disabledContainerColor = Color(0xFF2A2A2A),
-                focusedTextColor = Color(0xFF666666),
-                unfocusedTextColor = Color(0xFF666666),
-                focusedPlaceholderColor = Color(0xFF2A2A2A),
-                unfocusedPlaceholderColor = Color(0xFF2A2A2A),
+                focusedContainerColor = LETSSOPTColors.Surface,
+                unfocusedContainerColor = LETSSOPTColors.Surface,
+                disabledContainerColor = LETSSOPTColors.Surface,
+                focusedTextColor = LETSSOPTColors.Placeholder,
+                unfocusedTextColor = LETSSOPTColors.Placeholder,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedPlaceholderColor = LETSSOPTColors.Surface,
+                unfocusedPlaceholderColor = LETSSOPTColors.Surface,
             ),
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = TextStyle(
-                        color = Color(0xFF999999), fontSize = 14.sp,
-                        fontWeight = FontWeight(400)
-                    )
+                    style = typography.caption,
+                    color = LETSSOPTColors.Placeholder
                 )
             },
             shape = RoundedCornerShape(8.dp)
@@ -246,8 +234,8 @@ private fun isVerifySignUp(
     val passwordRegex = Regex("^.{8,12}$")
 
     return emailRegex.matches(emailText) &&
-    passwordRegex.matches(pwText) &&
-    pwText == confirmPwText
+            passwordRegex.matches(pwText) &&
+            pwText == confirmPwText
 }
 
 @Preview(showBackground = true)

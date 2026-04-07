@@ -20,7 +20,7 @@ fun LETSSOPTTheme(
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalLETSSOPTTypography provides defaultLETSSOPTTypography
+        LocalLETSSOPTTypography provides typography
     ) {
         MaterialTheme(
             colorScheme = LETSSOPTColorScheme,
