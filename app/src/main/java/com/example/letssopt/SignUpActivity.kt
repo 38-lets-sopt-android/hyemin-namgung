@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Scaffold
@@ -85,6 +86,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 .background(color = LETSSOPTColors.Background)
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp)
+                .imePadding()
 
         ) {
             Spacer(Modifier.weight(60f))
