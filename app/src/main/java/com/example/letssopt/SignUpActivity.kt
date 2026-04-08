@@ -1,10 +1,14 @@
 package com.example.letssopt
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.ui.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
@@ -27,6 +32,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +62,16 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpScreen(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
 
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        result ->
+        if (result.resultCode == Activity.RESULT_OK){
+            val value = result.data?.getStringExtra("result")
+        }
+    }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -65,6 +83,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         emailText.isNotBlank() && pwText.isNotBlank() && confirmPwText.isNotBlank()
 
     val typography = LocalLETSSOPTTypography.current
+
 
     Scaffold(
         snackbarHost = {
@@ -105,6 +124,10 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 onValueChange = { emailText = it },
                 titleText = "이메일",
                 placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next, keyboardType = KeyboardType.Email
+                ),
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(Modifier.weight(18f))
@@ -113,7 +136,12 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 value = pwText,
                 onValueChange = { pwText = it },
                 titleText = "비밀번호",
-                placeholder = "8~12자의 비밀번호를 입력해주세요!"
+                placeholder = "8~12자의 비밀번호를 입력해주세요!",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next, keyboardType = KeyboardType.Password
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
             )
 
             Spacer(Modifier.weight(18f))
@@ -122,7 +150,12 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 value = confirmPwText,
                 onValueChange = { confirmPwText = it },
                 titleText = "비밀번호 확인",
-                placeholder = "비밀번호를 다시 입력해주세요"
+                placeholder = "비밀번호를 다시 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done, keyboardType = KeyboardType.Password
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
             )
 
             Spacer(Modifier.weight(280f))
@@ -138,6 +171,12 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                             confirmPwText = confirmPwText
                         )
                     ) {
+                        val intent = Intent(context, LoginActivity::class.java).apply {
+                          putExtra("email", emailText)
+                          putExtra("pw", pwText)
+                        }
+                        launcher.launch(intent)
+
 
                     } else {
                         scope.launch {
