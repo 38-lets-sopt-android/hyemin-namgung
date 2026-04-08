@@ -7,30 +7,23 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.ui.theme.LETSSOPTColors
 import com.example.letssopt.ui.theme.typography
-import kotlinx.coroutines.launch
 
 @Composable
 fun SubmitButton(
-    text : String,
-    enabled : Boolean,
-    onClick : ()-> Unit,
-    modifier : Modifier = Modifier
-){
-
-
+    text: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Button(
         onClick = onClick,
-        Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
@@ -38,8 +31,7 @@ fun SubmitButton(
             disabledContainerColor = LETSSOPTColors.Disabled,
             contentColor = LETSSOPTColors.TextPrimary,
             disabledContentColor = LETSSOPTColors.Placeholder,
-
-            )
+        )
     ) {
         Text(
             text = text,
@@ -50,16 +42,14 @@ fun SubmitButton(
             textAlign = TextAlign.Center
         )
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun SubmitButtonPreview(){
+private fun SubmitButtonPreview() {
     SubmitButton(
         text = "회원가입",
         enabled = true,
         onClick = {},
-
     )
 }

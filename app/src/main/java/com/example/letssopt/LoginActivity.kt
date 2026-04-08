@@ -1,6 +1,5 @@
 package com.example.letssopt
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -51,14 +50,6 @@ class LoginActivity : ComponentActivity() {
                 LoginScreen(
                     email = email ?: "",
                     pw = pw ?: "",
-                    onFinish = { resultValue ->
-                        val resultIntent = Intent().apply {
-                            putExtra("result", resultValue)
-                        }
-
-                        setResult(Activity.RESULT_OK, resultIntent)
-                        finish()
-                    }
                 )
             }
         }
@@ -70,7 +61,6 @@ class LoginActivity : ComponentActivity() {
 private fun LoginScreen(
     email: String,
     pw: String,
-    onFinish: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -132,6 +122,7 @@ private fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
+
             Spacer(Modifier.weight(333f))
 
             Text(
@@ -163,8 +154,7 @@ private fun LoginScreen(
                         }
                         Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
                         context.startActivity(intent)
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
                     }
                 },
@@ -180,7 +170,6 @@ private fun LoginScreenPreview() {
         LoginScreen(
             email = "sjkd@djs.com",
             pw = "12kdsdd",
-            onFinish = {}
         )
     }
 }

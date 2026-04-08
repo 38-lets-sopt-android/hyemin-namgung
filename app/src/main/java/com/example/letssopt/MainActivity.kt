@@ -1,6 +1,5 @@
 package com.example.letssopt
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -40,9 +39,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LETSSOPTTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
+                Scaffold { innerPadding ->
                     MainScreen(
                         email = email ?: "",
                         modifier = Modifier.padding(innerPadding)
@@ -52,10 +49,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun MainScreen(
-    email: String,
-    modifier: Modifier = Modifier
+    email: String, modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
@@ -81,6 +78,7 @@ fun MainScreen(
 
         Text(
             text = "이메일",
+            modifier = Modifier.fillMaxWidth(),
             style = typography.caption,
             color = LETSSOPTColors.TextSecondary
         )
@@ -89,11 +87,11 @@ fun MainScreen(
 
         Text(
             text = email,
+            modifier = Modifier.fillMaxWidth(),
             style = typography.body,
             color = LETSSOPTColors.TextPrimary,
             textAlign = TextAlign.Center
         )
-
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -120,16 +118,17 @@ fun MainScreen(
                 style = typography.h3
             )
         }
+
         Spacer(modifier = Modifier.weight(6f))
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+private fun MainScreenPreview() {
     LETSSOPTTheme {
         MainScreen(
-            email="sopt.org",
+            email = "sopt.org",
         )
     }
 }

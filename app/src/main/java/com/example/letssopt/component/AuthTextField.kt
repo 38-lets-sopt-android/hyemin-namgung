@@ -30,7 +30,7 @@ fun AuthTextField(
     placeholder: String,
     keyboardOptions: KeyboardOptions,
     modifier: Modifier = Modifier,
-    visualTransformation : VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     Column(
         modifier = modifier
@@ -41,7 +41,6 @@ fun AuthTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 3.dp),
-
             style = typography.caption,
             color = LETSSOPTColors.TextSecondary
         )
@@ -66,7 +65,7 @@ fun AuthTextField(
                 focusedPlaceholderColor = LETSSOPTColors.Surface,
                 unfocusedPlaceholderColor = LETSSOPTColors.Surface,
             ),
-           placeholder = {
+            placeholder = {
                 Text(
                     text = placeholder,
                     style = typography.caption,
