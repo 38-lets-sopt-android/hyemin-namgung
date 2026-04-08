@@ -63,6 +63,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         emailText.isNotBlank() && pwText.isNotBlank() && confirmPwText.isNotBlank()
 
     val typography = LocalLETSSOPTTypography.current
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -152,15 +153,16 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                     disabledContainerColor = LETSSOPTColors.Disabled,
                     contentColor = LETSSOPTColors.TextPrimary,
                     disabledContentColor = LETSSOPTColors.Placeholder,
+
                 )
             ) {
                 Text(
                     text = "회원가입",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 131.dp, top = 17.dp, end = 130.dp, bottom = 16.dp),
-                    color = LETSSOPTColors.TextPrimary, // 여기 색상 두가지로 난누깅
-                    style = typography.body,
+                        .padding(vertical = 10.dp),
+                    style = typography.h3,
+                    textAlign = TextAlign.Center
                 )
             }
 

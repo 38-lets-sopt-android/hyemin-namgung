@@ -12,6 +12,7 @@ data class LETSSOPTTypography(
     val logo: TextStyle,
     val h1: TextStyle,
     val h2: TextStyle,
+    val h3: TextStyle,
     val body: TextStyle,
     val caption: TextStyle
 )
@@ -40,6 +41,12 @@ private val H2 = TextStyle(
     fontSize = 20.sp
 )
 
+private val H3 = TextStyle(
+    fontFamily = PretendartFontFamily,
+    fontWeight = FontWeight.Bold,
+    fontSize = 16.sp
+)
+
 private val Body = TextStyle(
     fontFamily = PretendartFontFamily,
     fontWeight = FontWeight.Normal,
@@ -56,6 +63,7 @@ val typography = LETSSOPTTypography(
    logo =Logo,
     h1 = H1,
     h2 = H2,
+    h3 = H3,
     body = Body,
     caption = Caption
 )
