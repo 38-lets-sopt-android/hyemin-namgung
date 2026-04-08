@@ -80,7 +80,8 @@ fun MainScreen(
             text = "이메일",
             modifier = Modifier.fillMaxWidth(),
             style = typography.caption,
-            color = LETSSOPTColors.TextSecondary
+            color = LETSSOPTColors.TextPrimary,
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(6.dp))
