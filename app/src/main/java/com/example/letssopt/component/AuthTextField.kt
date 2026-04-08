@@ -74,6 +74,7 @@ fun AuthTextField(
             },
             keyboardOptions = keyboardOptions,
             shape = RoundedCornerShape(8.dp),
+            maxLines = 1,
             visualTransformation = visualTransformation
         )
     }
