@@ -1,4 +1,4 @@
-package com.example.letssopt.component
+package com.example.letssopt.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,9 +18,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.ui.theme.LETSSOPTColors
-import com.example.letssopt.ui.theme.LETSSOPTTheme
-import com.example.letssopt.ui.theme.typography
+import com.example.letssopt.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.designsystem.theme.typography
 
 @Composable
 fun AuthTextField(

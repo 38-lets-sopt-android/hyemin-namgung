@@ -1,4 +1,4 @@
-package com.example.letssopt.ui.theme
+package com.example.letssopt.designsystem.theme
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle

@@ -25,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.ui.theme.LETSSOPTColors
-import com.example.letssopt.ui.theme.LETSSOPTTheme
-import com.example.letssopt.ui.theme.typography
+import com.example.letssopt.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.designsystem.theme.typography
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

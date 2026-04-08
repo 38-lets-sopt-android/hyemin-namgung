@@ -1,4 +1,4 @@
-package com.example.letssopt.ui.theme
+package com.example.letssopt.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
