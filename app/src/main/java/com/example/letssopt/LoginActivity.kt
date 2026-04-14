@@ -1,11 +1,14 @@
 package com.example.letssopt
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -41,17 +44,11 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val email = intent.getStringExtra("email")
-        val pw = intent.getStringExtra("pw")
-
         enableEdgeToEdge()
 
         setContent {
             LETSSOPTTheme {
-                LoginScreen(
-                    email = email ?: "",
-                    pw = pw ?: "",
-                )
+                LoginScreen()
             }
         }
 
@@ -60,15 +57,25 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 private fun LoginScreen(
-    email: String,
-    pw: String,
     modifier: Modifier = Modifier
 ) {
 
     val context = LocalContext.current
 
-    var emailText by remember { mutableStateOf("") }
-    var pwText by remember { mutableStateOf("") }
+    var inputEmail by remember { mutableStateOf("") }
+    var inputPw by remember { mutableStateOf("") }
+
+    var registerEmail by remember { mutableStateOf("") }
+    var registerPw by remember { mutableStateOf("") }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            registerEmail = result.data?.getStringExtra("registerEmail") ?: ""
+            registerPw = result.data?.getStringExtra("registerPw") ?: ""
+        }
+    }
 
     Scaffold { innerPadding ->
         Column(
@@ -101,8 +108,8 @@ private fun LoginScreen(
             Spacer(Modifier.weight(36f))
 
             AuthTextField(
-                value = emailText,
-                onValueChange = { emailText = it },
+                value = inputEmail,
+                onValueChange = { inputEmail = it },
                 titleText = "이메일",
                 placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
                 keyboardOptions = KeyboardOptions(
@@ -114,8 +121,8 @@ private fun LoginScreen(
             Spacer(Modifier.weight(18f))
 
             AuthTextField(
-                value = pwText,
-                onValueChange = { pwText = it },
+                value = inputPw,
+                onValueChange = { inputPw = it },
                 titleText = "비밀번호",
                 placeholder = "8~12자의 비밀번호를 입력해주세요!",
                 keyboardOptions = KeyboardOptions(
@@ -133,10 +140,8 @@ private fun LoginScreen(
                     .fillMaxWidth()
                     .noRippleClickable(
                         onClick = {
-                            val intent = Intent(context, SignUpActivity::class.java).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            }
-                            context.startActivity(intent)
+                            val intent = Intent(context, SignUpActivity::class.java)
+                            launcher.launch(intent)
                         },
                     ),
                 style = typography.caption,
@@ -151,10 +156,10 @@ private fun LoginScreen(
                 text = "로그인",
                 enabled = true,
                 onClick = {
-                    if (email == emailText && pw == pwText) {
+                    if (inputEmail == registerEmail && inputPw == registerPw) {
                         val intent = Intent(context, MainActivity::class.java).apply {
-                            putExtra("email", email)
-                            putExtra("pw", pw)
+                            putExtra("email", registerEmail)
+                            putExtra("pw", registerPw)
                         }
                         Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
                         context.startActivity(intent)
@@ -171,9 +176,6 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LETSSOPTTheme {
-        LoginScreen(
-            email = "sjkd@djs.com",
-            pw = "12kdsdd",
-        )
+        LoginScreen()
     }
 }
