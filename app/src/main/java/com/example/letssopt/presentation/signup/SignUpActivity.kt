@@ -1,6 +1,5 @@
-package com.example.letssopt
+package com.example.letssopt.presentation.signup
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -51,7 +50,7 @@ class SignUpActivity : ComponentActivity() {
                             putExtra("registerPw", pw)
                         }
 
-                        setResult(Activity.RESULT_OK, resultIntent)
+                        setResult(RESULT_OK, resultIntent)
                         finish()
                     }
                 )

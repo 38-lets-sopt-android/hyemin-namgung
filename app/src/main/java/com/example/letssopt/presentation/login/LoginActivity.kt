@@ -1,4 +1,4 @@
-package com.example.letssopt
+package com.example.letssopt.presentation.login
 
 import android.app.Activity
 import android.content.Intent
@@ -33,7 +33,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.common.noRippleClickable
+import com.example.letssopt.presentation.main.MainActivity
+import com.example.letssopt.presentation.signup.SignUpActivity
+import com.example.letssopt.common.modifier.noRippleClickable
 import com.example.letssopt.designsystem.component.AuthTextField
 import com.example.letssopt.designsystem.component.SubmitButton
 import com.example.letssopt.designsystem.theme.LETSSOPTColors

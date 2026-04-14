@@ -1,4 +1,4 @@
-package com.example.letssopt
+package com.example.letssopt.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.example.letssopt.designsystem.theme.LETSSOPTColors
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.designsystem.theme.typography
+import com.example.letssopt.presentation.login.LoginActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +100,7 @@ fun MainScreen(
         Button(
             onClick = {
                 val intent = Intent(context, LoginActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    Intent.setFlags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 }
                 context.startActivity(intent)
             },
