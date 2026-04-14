@@ -58,7 +58,7 @@ fun AuthTextField(
                 focusedContainerColor = LETSSOPTColors.Surface,
                 unfocusedContainerColor = LETSSOPTColors.Surface,
                 disabledContainerColor = LETSSOPTColors.Surface,
-                focusedTextColor = LETSSOPTColors.Placeholder,
+                focusedTextColor = LETSSOPTColors.TextPrimary,
                 unfocusedTextColor = LETSSOPTColors.Placeholder,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
