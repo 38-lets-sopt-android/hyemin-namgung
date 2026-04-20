@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,12 +40,14 @@ import com.example.letssopt.designsystem.theme.typography
 import kotlinx.coroutines.launch
 
 class SignUpActivity : ComponentActivity() {
+    private val viewModel by viewModels<SignUpViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LETSSOPTTheme {
                 SignUpScreen(
+                    viewModel = viewModel,
                     onSignUpSuccess = { email, pw ->
                         val resultIntent = Intent().apply {
                             putExtra("registerEmail", email)
@@ -52,6 +56,7 @@ class SignUpActivity : ComponentActivity() {
 
                         setResult(RESULT_OK, resultIntent)
                         finish()
+
                     }
                 )
             }
@@ -61,18 +66,17 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpScreen(
+    viewModel: SignUpViewModel,
     onSignUpSuccess: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    var inputEmail by remember { mutableStateOf("") }
-    var inputPw by remember { mutableStateOf("") }
-    var confirmPw by remember { mutableStateOf("") }
 
-    val isButtonEnabled =
-        inputEmail.isNotBlank() && inputPw.isNotBlank() && confirmPw.isNotBlank()
+    val inputEmail by viewModel.email.collectAsState()
+    val inputPassword by viewModel.password.collectAsState()
+    val inputConfirmPassword by viewModel.confirmPassword.collectAsState()
 
     Scaffold(
         snackbarHost = {
@@ -111,7 +115,7 @@ fun SignUpScreen(
 
             AuthTextField(
                 value = inputEmail,
-                onValueChange = { inputEmail = it },
+                onValueChange = { viewModel.updateEmail(changeEmail = it) },
                 titleText = "이메일",
                 placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
                 keyboardOptions = KeyboardOptions(
@@ -124,8 +128,8 @@ fun SignUpScreen(
             Spacer(Modifier.weight(18f))
 
             AuthTextField(
-                value = inputPw,
-                onValueChange = { inputPw = it },
+                value = inputPassword,
+                onValueChange = { viewModel.updatePassword(changePassword = it) },
                 titleText = "비밀번호",
                 placeholder = "8~12자의 비밀번호를 입력해주세요!",
                 keyboardOptions = KeyboardOptions(
@@ -139,8 +143,8 @@ fun SignUpScreen(
             Spacer(Modifier.weight(18f))
 
             AuthTextField(
-                value = confirmPw,
-                onValueChange = { confirmPw = it },
+                value = inputConfirmPassword,
+                onValueChange = { viewModel.updateConfirmPassword(changeConfirmPassword = it) },
                 titleText = "비밀번호 확인",
                 placeholder = "비밀번호를 다시 입력해주세요",
                 keyboardOptions = KeyboardOptions(
@@ -155,16 +159,12 @@ fun SignUpScreen(
 
             SubmitButton(
                 text = "회원가입",
-                enabled = isButtonEnabled,
+                enabled = viewModel.isButtonEnabled(),
                 onClick = {
-                    if (
-                        isVerifySignUp(
-                            email = inputEmail,
-                            pw = inputPw,
-                            confirmPw = confirmPw
-                        )
+                    if ( //Todo() 나중에 각각 다른 분기처리해서 isError로 변경하기
+                       viewModel.isVerifyEmail() && viewModel.isVerifyPassword() && viewModel.isSamePassword()
                     ) {
-                        onSignUpSuccess(inputEmail, inputPw)
+                        onSignUpSuccess(inputEmail, inputPassword)
                     } else {
                         scope.launch {
                             snackbarHostState.showSnackbar(
@@ -180,24 +180,10 @@ fun SignUpScreen(
     }
 }
 
-private fun isVerifySignUp(
-    email: String,
-    pw: String,
-    confirmPw: String
-): Boolean {
-    val emailRegex =
-        Regex("^[A-Za-z0-9](?:[A-Za-z0-9._%+-]*[A-Za-z0-9])?@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\\.[A-Za-z]{2,}$")
-    val passwordRegex = Regex("^.{8,12}$")
-
-    return emailRegex.matches(email) &&
-            passwordRegex.matches(pw) &&
-            pw == confirmPw
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun SignUpScreenPreview() {
     LETSSOPTTheme {
-        SignUpScreen(onSignUpSuccess = { _, _ -> })
+        SignUpScreen(viewModel = SignUpViewModel(), onSignUpSuccess = { _, _ -> })
     }
 }
