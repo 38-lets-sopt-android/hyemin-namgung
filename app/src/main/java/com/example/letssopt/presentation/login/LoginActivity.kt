@@ -9,6 +9,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +45,8 @@ import com.example.letssopt.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.designsystem.theme.typography
 
 class LoginActivity : ComponentActivity() {
+    private val viewModel by viewModels<LoginViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,7 +54,7 @@ class LoginActivity : ComponentActivity() {
 
         setContent {
             LETSSOPTTheme {
-                LoginScreen()
+                LoginScreen(viewModel = viewModel)
             }
         }
 
@@ -59,23 +63,26 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 private fun LoginScreen(
-    modifier: Modifier = Modifier
+    viewModel : LoginViewModel,
+    modifier: Modifier = Modifier,
 ) {
 
     val context = LocalContext.current
+    val inputEmail by viewModel.email.collectAsState()
+    val inputPassword by viewModel.password.collectAsState()
 
-    var inputEmail by remember { mutableStateOf("") }
-    var inputPw by remember { mutableStateOf("") }
+//    var inputEmail by remember { mutableStateOf("") }
+//    var inputPw by remember { mutableStateOf("") }
 
     var registerEmail by remember { mutableStateOf("") }
-    var registerPw by remember { mutableStateOf("") }
+    var registerPassword by remember { mutableStateOf("") }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             registerEmail = result.data?.getStringExtra("registerEmail") ?: ""
-            registerPw = result.data?.getStringExtra("registerPw") ?: ""
+            registerPassword = result.data?.getStringExtra("registerPw") ?: ""
         }
     }
 
@@ -111,7 +118,7 @@ private fun LoginScreen(
 
             AuthTextField(
                 value = inputEmail,
-                onValueChange = { inputEmail = it },
+                onValueChange = { viewModel.updateEmail(changeEmail = it) },
                 titleText = "이메일",
                 placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
                 keyboardOptions = KeyboardOptions(
@@ -123,8 +130,8 @@ private fun LoginScreen(
             Spacer(Modifier.weight(18f))
 
             AuthTextField(
-                value = inputPw,
-                onValueChange = { inputPw = it },
+                value = inputPassword,
+                onValueChange = { viewModel.updatePassword(changePassword = it) },
                 titleText = "비밀번호",
                 placeholder = "8~12자의 비밀번호를 입력해주세요!",
                 keyboardOptions = KeyboardOptions(
@@ -158,10 +165,11 @@ private fun LoginScreen(
                 text = "로그인",
                 enabled = true,
                 onClick = {
-                    if (inputEmail == registerEmail && inputPw == registerPw) {
+                  val success = viewModel.login(registerEmail, registerPassword)
+                    if (success) {
                         val intent = Intent(context, MainActivity::class.java).apply {
                             putExtra("email", registerEmail)
-                            putExtra("pw", registerPw)
+                            putExtra("pw", registerPassword)
                         }
                         Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
                         context.startActivity(intent)
@@ -178,6 +186,6 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LETSSOPTTheme {
-        LoginScreen()
+        LoginScreen(viewModel = LoginViewModel())
     }
 }
