@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.letssopt.presentation.main.MainActivity
 import com.example.letssopt.presentation.signup.SignUpActivity
 import com.example.letssopt.common.modifier.noRippleClickable
@@ -43,18 +44,55 @@ import com.example.letssopt.designsystem.component.SubmitButton
 import com.example.letssopt.designsystem.theme.LETSSOPTColors
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.designsystem.theme.typography
+import com.example.letssopt.local.UserPreferences
 
 class LoginActivity : ComponentActivity() {
-    private val viewModel by viewModels<LoginViewModel>()
+
+    private val pref by lazy { UserPreferences(this) }
+    private val viewModelFactory by lazy { LoginViewModelFactory(pref) }
+    private val viewModel by viewModels<LoginViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
+        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContent {
             LETSSOPTTheme {
-                LoginScreen(viewModel = viewModel)
+                val inputEmail by viewModel.email.collectAsState()
+                val inputPassword by viewModel.password.collectAsState()
+
+                LoginScreen(
+                    email = inputEmail,
+                    password = inputPassword,
+                    onEmailChange = viewModel::updateEmail,
+                    onPasswordChange = viewModel::updatePassword,
+                    onSignInClick = {
+                        val success = viewModel.isValidLogin()
+                        if (success) {
+                            viewModel.setAutoLogin(true)
+//                        val intent = Intent(context, MainActivity::class.java).apply {
+//                            putExtra("email", )
+//                            putExtra("pw", registerPassword)
+//                        }
+                            Toast.makeText(this@LoginActivity, "로그인에 성공했습니다", Toast.LENGTH_SHORT)
+                                .show()
+                            startActivity(
+                                Intent(this@LoginActivity, MainActivity::class.java)
+                            )
+
+                        } else {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "이메일 또는 비밀번호가 올바르지 않습니다",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    },
+                    onSignUpClick = {
+                        startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
+                    },
+                )
             }
         }
 
@@ -63,29 +101,14 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 private fun LoginScreen(
-    viewModel : LoginViewModel,
+    email: String,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSignInClick: () -> Unit,
+    onSignUpClick:() -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    val context = LocalContext.current
-    val inputEmail by viewModel.email.collectAsState()
-    val inputPassword by viewModel.password.collectAsState()
-
-//    var inputEmail by remember { mutableStateOf("") }
-//    var inputPw by remember { mutableStateOf("") }
-
-    var registerEmail by remember { mutableStateOf("") }
-    var registerPassword by remember { mutableStateOf("") }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            registerEmail = result.data?.getStringExtra("registerEmail") ?: ""
-            registerPassword = result.data?.getStringExtra("registerPw") ?: ""
-        }
-    }
-
     Scaffold { innerPadding ->
         Column(
             modifier = modifier
@@ -117,8 +140,8 @@ private fun LoginScreen(
             Spacer(Modifier.weight(36f))
 
             AuthTextField(
-                value = inputEmail,
-                onValueChange = { viewModel.updateEmail(changeEmail = it) },
+                value = email,
+                onValueChange = onEmailChange,
                 titleText = "이메일",
                 placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
                 keyboardOptions = KeyboardOptions(
@@ -130,8 +153,8 @@ private fun LoginScreen(
             Spacer(Modifier.weight(18f))
 
             AuthTextField(
-                value = inputPassword,
-                onValueChange = { viewModel.updatePassword(changePassword = it) },
+                value = password,
+                onValueChange = onPasswordChange,
                 titleText = "비밀번호",
                 placeholder = "8~12자의 비밀번호를 입력해주세요!",
                 keyboardOptions = KeyboardOptions(
@@ -148,10 +171,7 @@ private fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable(
-                        onClick = {
-                            val intent = Intent(context, SignUpActivity::class.java)
-                            launcher.launch(intent)
-                        },
+                        onClick = onSignUpClick,
                     ),
                 style = typography.caption,
                 color = LETSSOPTColors.TextSecondary,
@@ -164,19 +184,18 @@ private fun LoginScreen(
             SubmitButton(
                 text = "로그인",
                 enabled = true,
-                onClick = {
-                  val success = viewModel.login(registerEmail, registerPassword)
-                    if (success) {
-                        val intent = Intent(context, MainActivity::class.java).apply {
-                            putExtra("email", registerEmail)
-                            putExtra("pw", registerPassword)
-                        }
-                        Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
-                        context.startActivity(intent)
-                    } else {
-                        Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
-                    }
-                },
+                onClick = onSignInClick
+//                    val success = viewModel.login(registerEmail, registerPassword)
+//                    if (success) {
+//                        val intent = Intent(context, MainActivity::class.java).apply {
+//                            putExtra("email", registerEmail)
+//                            putExtra("pw", registerPassword)
+//                        }
+//                        Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
+//                        context.startActivity(intent)
+//                    } else {
+//                        Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+//                    }
             )
         }
     }
@@ -186,6 +205,6 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LETSSOPTTheme {
-        LoginScreen(viewModel = LoginViewModel())
+//        LoginScreen(viewModel = LoginViewModel())
     }
 }
