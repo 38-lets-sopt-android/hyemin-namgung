@@ -1,10 +1,13 @@
 package com.example.letssopt.presentation.signup
 
 import androidx.lifecycle.ViewModel
+import com.example.letssopt.local.UserPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel(
+    private val preferences: UserPreferences
+) : ViewModel() {
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
 
@@ -28,7 +31,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun isButtonEnabled(): Boolean {
-     return   _email.value.isNotBlank() && _password.value.isNotBlank() && _confirmPassword.value.isNotBlank()
+        return _email.value.isNotBlank() && _password.value.isNotBlank() && _confirmPassword.value.isNotBlank()
     }
 
     fun isVerifyEmail(): Boolean {
@@ -41,11 +44,19 @@ class SignUpViewModel : ViewModel() {
         val passwordRegex = Regex("^.{8,12}$")
 
         return passwordRegex.matches(_password.value)
-
     }
 
     fun isSamePassword(): Boolean {
         return _password.value == _confirmPassword.value
+    }
+
+    fun isValidSignUp(): Boolean {
+        return isVerifyEmail() && isVerifyPassword() && isSamePassword()
+
+    }
+
+    fun saveUserInfo() {
+        preferences.saveUserInfo(_email.value, _password.value)
     }
 
 }
