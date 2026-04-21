@@ -57,6 +57,12 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        if(viewModel.getAutoLogin()){
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
+
         setContent {
             LETSSOPTTheme {
                 val inputEmail by viewModel.email.collectAsState()
@@ -71,10 +77,6 @@ class LoginActivity : ComponentActivity() {
                         val success = viewModel.isValidLogin()
                         if (success) {
                             viewModel.setAutoLogin(true)
-//                        val intent = Intent(context, MainActivity::class.java).apply {
-//                            putExtra("email", )
-//                            putExtra("pw", registerPassword)
-//                        }
                             Toast.makeText(this@LoginActivity, "로그인에 성공했습니다", Toast.LENGTH_SHORT)
                                 .show()
                             startActivity(
@@ -82,11 +84,8 @@ class LoginActivity : ComponentActivity() {
                             )
 
                         } else {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "이메일 또는 비밀번호가 올바르지 않습니다",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this@LoginActivity, "이메일 또는 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     },
                     onSignUpClick = {
