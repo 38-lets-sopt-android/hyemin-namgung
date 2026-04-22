@@ -40,37 +40,54 @@ object HomeFakeData {
             title = "프로젝트 헤일메리",
             imageRes = R.drawable.img_projecthailmary
         ),
-    )
-
-    val upcomingContentData = persistentListOf(
         ContentItemModel(
             id = 7L,
             title = "이 사랑 통역? 되나요",
             imageRes = R.drawable.img_love_translation
         ),
+    )
+
+    val upcomingContentData = persistentListOf(
         ContentItemModel(
             id = 8L,
+            title = "이 사랑 통역? 되나요",
+            imageRes = R.drawable.img_love_translation
+        ),
+        ContentItemModel(
+            id = 9L,
             title = "스트레인저 5",
             imageRes = R.drawable.img_stranger_things_5
         ),
         ContentItemModel(
-            id = 9L,
+            id = 10L,
             title = "프로젝트 헤일메리",
             imageRes = R.drawable.img_projecthailmary
         ),
+        ContentItemModel(
+            id = 11L,
+            title = "이 사랑 통역? 되나요",
+            imageRes = R.drawable.img_love_translation
+        ),
     )
-    val watchPartyData = persistentListOf(
+
+    val watchaPartyData = persistentListOf(
         WatchaPartyModel(
-            id = 10L,
+            id = 12L,
             title = "왕과사는 남자",
             startTime = "21:13",
             imageRes = R.drawable.img_king_and_man
         ),
         WatchaPartyModel(
-            id = 10L,
+            id = 13L,
             title = "파묘",
             startTime = "22:22",
             imageRes = R.drawable.img_exhuma
+        ),
+        WatchaPartyModel(
+            id = 14L,
+            title = "왕과사는 남자",
+            startTime = "21:13",
+            imageRes = R.drawable.img_king_and_man
         ),
 
     )

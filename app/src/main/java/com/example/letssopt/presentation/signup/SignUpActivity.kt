@@ -48,8 +48,10 @@ class SignUpActivity : ComponentActivity() {
     private val viewModel by viewModels<SignUpViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             LETSSOPTTheme {
                 val inputEmail by viewModel.email.collectAsState()
@@ -64,7 +66,7 @@ class SignUpActivity : ComponentActivity() {
                     password = inputPassword,
                     confirmPassword = inputConfirmPassword,
                     isButtonEnabled = viewModel.isButtonEnabled(),
-                    snackbarHostState,
+                    snackbarHostState = snackbarHostState,
                     onEmailChange = viewModel::updateEmail,
                     onPasswordChange = viewModel::updatePassword,
                     onConfirmPasswordChange = viewModel::updateConfirmPassword,
@@ -104,7 +106,6 @@ fun SignUpScreen(
     onSignUpClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
 
     Scaffold(
         snackbarHost = {

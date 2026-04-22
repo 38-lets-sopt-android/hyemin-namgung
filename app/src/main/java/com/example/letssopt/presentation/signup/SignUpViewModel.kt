@@ -52,7 +52,6 @@ class SignUpViewModel(
 
     fun isValidSignUp(): Boolean {
         return isVerifyEmail() && isVerifyPassword() && isSamePassword()
-
     }
 
     fun saveUserInfo() {

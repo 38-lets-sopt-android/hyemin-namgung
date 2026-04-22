@@ -57,7 +57,7 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        if(viewModel.getAutoLogin()){
+        if (viewModel.getAutoLogin()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
             return
@@ -84,7 +84,11 @@ class LoginActivity : ComponentActivity() {
                             )
 
                         } else {
-                            Toast.makeText(this@LoginActivity, "이메일 또는 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "이메일 또는 비밀번호가 올바르지 않습니다",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     },
@@ -105,7 +109,7 @@ private fun LoginScreen(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSignInClick: () -> Unit,
-    onSignUpClick:() -> Unit,
+    onSignUpClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold { innerPadding ->
@@ -184,17 +188,6 @@ private fun LoginScreen(
                 text = "로그인",
                 enabled = true,
                 onClick = onSignInClick
-//                    val success = viewModel.login(registerEmail, registerPassword)
-//                    if (success) {
-//                        val intent = Intent(context, MainActivity::class.java).apply {
-//                            putExtra("email", registerEmail)
-//                            putExtra("pw", registerPassword)
-//                        }
-//                        Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
-//                        context.startActivity(intent)
-//                    } else {
-//                        Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
-//                    }
             )
         }
     }

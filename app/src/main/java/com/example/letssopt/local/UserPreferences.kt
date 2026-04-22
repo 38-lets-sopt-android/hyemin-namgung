@@ -21,14 +21,14 @@ class UserPreferences(context: Context){
         return pref.getString("password","") ?: ""
     }
 
-    fun isAutoLogin(isLogin:Boolean) {
+    fun setAutoLogin(isLogin:Boolean) {
         pref.edit{
             putBoolean("is_login", isLogin)
         }
     }
 
     fun getAutoLogin(): Boolean{
-       return pref.getBoolean("is_Login",false)
+       return pref.getBoolean("is_login",false)
     }
 
 }
