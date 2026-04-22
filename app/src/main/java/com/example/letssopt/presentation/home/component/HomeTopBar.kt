@@ -22,7 +22,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun HomeTopBar(
-    actions: ImmutableList<HomeAction>,
     onActionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -36,7 +35,7 @@ fun HomeTopBar(
         ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        actions.forEach { action ->
+        homeTopBarActions.forEach { action ->
             Icon(
                 imageVector = ImageVector.vectorResource(id = action.iconRes),
                 contentDescription = null,
@@ -67,15 +66,17 @@ enum class HomeAction(
     ),
 }
 
+private val homeTopBarActions = persistentListOf(
+    HomeAction.WATCH,
+    HomeAction.NOTIFICATION,
+    HomeAction.PROFILE,
+)
+
+
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 private fun HomeTopBarPreview() {
     HomeTopBar(
-        actions = persistentListOf(
-            HomeAction.WATCH,
-            HomeAction.NOTIFICATION,
-            HomeAction.PROFILE
-        ),
         onActionClick = {}
     )
 
