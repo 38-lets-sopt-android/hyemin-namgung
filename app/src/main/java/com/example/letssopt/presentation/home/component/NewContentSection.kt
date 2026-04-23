@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -35,6 +37,19 @@ fun NewContentSection(
     onContentClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    if (contents.isEmpty()) return
+
+    val scrollState = rememberLazyListState()
+
+    val initialIndex = remember(contents.size) {
+        Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2 % contents.size)
+    }
+
+    LaunchedEffect(initialIndex) {
+        scrollState.scrollToItem(initialIndex)
+    }
+
     Column(modifier = modifier.fillMaxWidth()) {
 
         Text(
@@ -57,12 +72,17 @@ fun NewContentSection(
 
         Spacer(Modifier.height(24.dp))
 
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        LazyRow(
+            state = scrollState,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             items(
-                items = contents,
-                key = { it.id }
-            ) { item ->
-                NewContentCard(item = item, onContentClick = { onContentClick })
+                count = Int.MAX_VALUE,
+                key = { index -> index }
+            ) { index ->
+                val item = contents[index % contents.size]
+
+                NewContentCard(item = item, onContentClick = onContentClick )
             }
         }
 
@@ -78,8 +98,8 @@ private fun NewContentCard(
 ) {
     Box(
         modifier = modifier
-            .width(390.dp)
-            .aspectRatio(39f / 16f)
+            .width(280.dp)
+            .aspectRatio(7f / 4f)
             .clip(RoundedCornerShape(10.dp))
             .noRippleClickable(onClick = onContentClick)
     ) {
