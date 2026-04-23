@@ -7,14 +7,20 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.R
+import org.w3c.dom.Text
 
 data class LETSSOPTTypography(
     val logo: TextStyle,
     val h1: TextStyle,
     val h2: TextStyle,
     val h3: TextStyle,
+    val subH1 : TextStyle,
+    val subH3 : TextStyle,
     val body: TextStyle,
-    val caption: TextStyle
+    val body1 : TextStyle,
+    val body2: TextStyle,
+    val caption: TextStyle,
+    val caption1: TextStyle
 )
 
 private val PretendartFontFamily = FontFamily(
@@ -43,8 +49,20 @@ private val H2 = TextStyle(
 
 private val H3 = TextStyle(
     fontFamily = PretendartFontFamily,
-    fontWeight = FontWeight.Bold,
-    fontSize = 16.sp
+    fontWeight = FontWeight.W600,
+    fontSize = 20.sp
+)
+
+private val SubH1 = TextStyle(
+    fontFamily = PretendartFontFamily,
+    fontWeight = FontWeight.W600,
+    fontSize = 18.sp
+)
+
+private val SubH3 = TextStyle(
+    fontFamily = PretendartFontFamily,
+    fontWeight = FontWeight.W600,
+    fontSize = 12.sp
 )
 
 private val Body = TextStyle(
@@ -53,19 +71,42 @@ private val Body = TextStyle(
     fontSize = 16.sp
 )
 
+private val Body1 = TextStyle(
+    fontFamily = PretendartFontFamily,
+    fontWeight = FontWeight.W500,
+    fontSize = 12.sp
+)
+
+private val Body2 = TextStyle(
+    fontFamily = PretendartFontFamily,
+    fontWeight = FontWeight.W400,
+    fontSize = 12.sp
+)
+
 private val Caption = TextStyle(
     fontFamily = PretendartFontFamily,
     fontWeight = FontWeight.Normal,
     fontSize = 14.sp
 )
 
+private val Caption1 = TextStyle(
+    fontFamily = PretendartFontFamily,
+    fontWeight = FontWeight.W300,
+    fontSize = 12.sp
+)
+
 val typography = LETSSOPTTypography(
-   logo =Logo,
+    logo = Logo,
     h1 = H1,
     h2 = H2,
     h3 = H3,
+    subH1 = SubH1,
+    subH3 = SubH3,
     body = Body,
-    caption = Caption
+    body1 = Body1,
+    body2 = Body2,
+    caption = Caption,
+    caption1 = Caption1
 )
 
 val LocalLETSSOPTTypography = staticCompositionLocalOf {
