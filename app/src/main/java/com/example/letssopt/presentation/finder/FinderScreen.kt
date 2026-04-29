@@ -11,21 +11,34 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.common.navigation.MainTabRoute
+import com.example.letssopt.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.presentation.home.HomeFakeData
+import com.example.letssopt.presentation.home.model.ContentItemModel
 import com.example.letssopt.presentation.finder.component.WishlistSection
-import kotlinx.serialization.Serializable
-
-@Serializable
-data object Finder : MainTabRoute
 
 @Composable
-fun FinderScreen(
-    innerPadding: PaddingValues,
-    modifier: Modifier = Modifier,
+fun FinderRoute(
+    paddingValues: PaddingValues,
     viewModel: FinderViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    FinderScreen(
+        uiState = uiState,
+        innerPadding = paddingValues,
+        onContentClick = {},
+        onDeleteClick = viewModel::deleteWishlistItem
+    )
+}
+
+@Composable
+private fun FinderScreen(
+    uiState: FinderUiState,
+    innerPadding: PaddingValues,
+    onContentClick: (ContentItemModel) -> Unit,
+    onDeleteClick: (ContentItemModel) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -33,18 +46,26 @@ fun FinderScreen(
 
         WishlistSection(
             items = uiState.wishlistitems,
-            onContentClick = {},
-            onDeleteClick = viewModel::deleteWishlistItem,
+            onContentClick = onContentClick,
+            onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(innerPadding)
         )
 
         Spacer(Modifier.weight(193f))
     }
-
 }
 
 @Preview
 @Composable
 private fun FinderScreenPreview() {
-    FinderScreen(innerPadding = PaddingValues())
+    LETSSOPTTheme {
+        FinderScreen(
+            uiState = FinderUiState(
+                wishlistitems = HomeFakeData.upcomingContentData
+            ),
+            innerPadding = PaddingValues(),
+            onContentClick = {},
+            onDeleteClick = {}
+        )
+    }
 }
