@@ -1,33 +1,35 @@
-package com.example.letssopt.presentation.login
+package com.example.letssopt.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import com.example.letssopt.local.UserPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class LoginViewModel(
     private val preferences: UserPreferences
 ) : ViewModel() {
-    private val _email = MutableStateFlow("")
-    val email = _email.asStateFlow()
 
-    private val _password = MutableStateFlow("")
-    val password = _password.asStateFlow()
-
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState = _uiState.asStateFlow()
 
     fun updateEmail(changeEmail: String) {
-        _email.value = changeEmail
+        _uiState.update {
+            it.copy(email = changeEmail)
+        }
     }
 
     fun updatePassword(changePassword: String) {
-        _password.value = changePassword
+        _uiState.update {
+            it.copy(password = changePassword)
+        }
     }
 
     fun isValidLogin(): Boolean {
-        val savedEmail = preferences.getEmail()
-        val savedPassWord = preferences.getPassword()
-        return _email.value == savedEmail &&
-                _password.value == savedPassWord
+        val state = _uiState.value
+
+        return preferences.getEmail() == state.email &&
+                preferences.getPassword() == state.password
     }
 
     fun setAutoLogin(isLogin: Boolean) {
