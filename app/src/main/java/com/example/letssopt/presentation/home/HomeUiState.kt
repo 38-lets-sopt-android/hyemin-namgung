@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class HomeUiState (
-    val wishlistitems : ImmutableList<ContentItemModel> = persistentListOf(),
+    val wishlistItems : ImmutableList<ContentItemModel> = persistentListOf(),
 
     val newContentItems :  ImmutableList<ContentItemModel> =  HomeFakeData.newContentsData,
 

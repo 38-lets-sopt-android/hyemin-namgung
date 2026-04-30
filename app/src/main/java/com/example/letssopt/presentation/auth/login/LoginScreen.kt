@@ -152,6 +152,8 @@ private fun LoginScreen(
                 onClick = onSignInClick
             )
 
+            Spacer(Modifier.weight(26f))
+
         }
 
 }

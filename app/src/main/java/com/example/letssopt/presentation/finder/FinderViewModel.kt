@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 class FinderViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         FinderUiState(
-            wishlistitems = HomeFakeData.upcomingContentData
+            wishlistItems = HomeFakeData.upcomingContentData
         )
     )
 
@@ -21,10 +21,11 @@ class FinderViewModel : ViewModel() {
     fun deleteWishlistItem(item: ContentItemModel) {
         _uiState.update { currentState ->
             currentState.copy(
-                wishlistitems = currentState.wishlistitems
+                wishlistItems = currentState.wishlistItems
                     .filterNot { it.id == item.id }
                     .toImmutableList()
             )
         }
     }
+
 }

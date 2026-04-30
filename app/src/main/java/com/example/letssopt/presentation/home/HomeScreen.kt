@@ -1,33 +1,26 @@
 package com.example.letssopt.presentation.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.common.navigation.MainTabRoute
 import com.example.letssopt.designsystem.theme.LETSSOPTColors
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.presentation.finder.FinderUiState
 import com.example.letssopt.presentation.home.component.HomeTopBar
 import com.example.letssopt.presentation.home.component.NewContentSection
 import com.example.letssopt.presentation.home.component.UpcomingSection
 import com.example.letssopt.presentation.home.component.WatchaPartySection
 import com.example.letssopt.presentation.home.component.WatgorithmSection
 import com.example.letssopt.presentation.home.model.WatchaPartyModel
-import kotlinx.serialization.Serializable
 
 @Composable
 fun HomeRoute(paddingValues: PaddingValues, viewModel: HomeViewModel = viewModel()) {
@@ -104,6 +97,7 @@ private fun HomeScreen(
                     onMoreClick = onUpcomingMoreClick
                 )
             }
+            
             item(key = "watcha_party") {
                 WatchaPartySection(
                     parties = uiState.watchaPartyItems,
