@@ -39,8 +39,8 @@ fun NavGraphBuilder.authNavGraph(
                         popUpTo(Auth) { inclusive = true }
                     }
                 },
-                onLoginFailure = {
-                    Toast.makeText(context, "이메일 또는 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+                onLoginFailure = { message ->
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
             )
         }

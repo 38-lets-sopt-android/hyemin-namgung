@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,7 +38,7 @@ fun LoginRoute(
     paddingValues: PaddingValues,
     onNavigateToSignUp: () -> Unit,
     onLoginSuccess: () -> Unit,
-    onLoginFailure: () -> Unit
+    onLoginFailure: (String) -> Unit
 ) {
     val context = LocalContext.current
     val pref = remember {  UserPreferences(context)}
@@ -46,21 +47,21 @@ fun LoginRoute(
 
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { sideEffect ->
+            when(sideEffect){
+                LoginSideEffect.LoginSuccess -> onLoginSuccess()
+                is LoginSideEffect.ShowToastMessage -> onLoginFailure(sideEffect.message)
+            }
+        }
+    }
     LoginScreen(
         uiState = uiState,
         paddingValues = paddingValues,
         onEmailChange = viewModel::updateEmail,
         onPasswordChange = viewModel::updatePassword,
-        onSignInClick = {
-            val success = viewModel.isValidLogin()
-            if (success) {
-                viewModel.setAutoLogin(true)
-                onLoginSuccess()
-            } else {
-                onLoginFailure()
-            }
-        },
-        onSignUpClick = { onNavigateToSignUp() },
+        onSignInClick = viewModel::onLoginClick,
+        onSignUpClick = onNavigateToSignUp,
     )
 
 }

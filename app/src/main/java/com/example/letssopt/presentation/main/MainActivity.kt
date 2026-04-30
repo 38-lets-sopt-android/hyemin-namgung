@@ -16,9 +16,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val pref = UserPreferences(this)
-//        val startDestination = if(pref.getAutoLogin()) Home else Auth
+        val startDestination = if (pref.getAutoLogin()) Home else Auth
 
-        val startDestination = Auth
         setContent {
             LETSSOPTTheme {
                 val appState = rememberMainAppState(
