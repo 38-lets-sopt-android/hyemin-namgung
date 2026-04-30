@@ -1,31 +1,19 @@
-package com.example.letssopt.presentation.login
+package com.example.letssopt.presentation.auth.login
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
@@ -35,9 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.letssopt.presentation.main.MainActivity
-import com.example.letssopt.presentation.signup.SignUpActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.common.modifier.noRippleClickable
 import com.example.letssopt.designsystem.component.AuthTextField
 import com.example.letssopt.designsystem.component.SubmitButton
@@ -46,79 +32,55 @@ import com.example.letssopt.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.designsystem.theme.typography
 import com.example.letssopt.local.UserPreferences
 
-class LoginActivity : ComponentActivity() {
+@Composable
+fun LoginRoute(
+    paddingValues: PaddingValues,
+    onNavigateToSignUp: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    onLoginFailure: () -> Unit
+) {
+    val context = LocalContext.current
+    val pref = remember {  UserPreferences(context)}
+    val factory = remember { LoginViewModelFactory(pref) }
+    val viewModel : LoginViewModel = viewModel(factory = factory)
 
-    private val pref by lazy { UserPreferences(this) }
-    private val viewModelFactory by lazy { LoginViewModelFactory(pref) }
-    private val viewModel by viewModels<LoginViewModel> { viewModelFactory }
+    val uiState by viewModel.uiState.collectAsState()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        if (viewModel.getAutoLogin()) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-            return
-        }
-
-        setContent {
-            LETSSOPTTheme {
-                val inputEmail by viewModel.email.collectAsState()
-                val inputPassword by viewModel.password.collectAsState()
-
-                LoginScreen(
-                    email = inputEmail,
-                    password = inputPassword,
-                    onEmailChange = viewModel::updateEmail,
-                    onPasswordChange = viewModel::updatePassword,
-                    onSignInClick = {
-                        val success = viewModel.isValidLogin()
-                        if (success) {
-                            viewModel.setAutoLogin(true)
-                            Toast.makeText(this@LoginActivity, "로그인에 성공했습니다", Toast.LENGTH_SHORT)
-                                .show()
-                            startActivity(
-                                Intent(this@LoginActivity, MainActivity::class.java)
-                            )
-
-                        } else {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "이메일 또는 비밀번호가 올바르지 않습니다",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
-                    },
-                    onSignUpClick = {
-                        startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
-                    },
-                )
+    LoginScreen(
+        uiState = uiState,
+        paddingValues = paddingValues,
+        onEmailChange = viewModel::updateEmail,
+        onPasswordChange = viewModel::updatePassword,
+        onSignInClick = {
+            val success = viewModel.isValidLogin()
+            if (success) {
+                viewModel.setAutoLogin(true)
+                onLoginSuccess()
+            } else {
+                onLoginFailure()
             }
-        }
+        },
+        onSignUpClick = { onNavigateToSignUp() },
+    )
 
-    }
 }
 
 @Composable
 private fun LoginScreen(
-    email: String,
-    password: String,
+    uiState: LoginUiState,
+    paddingValues: PaddingValues,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold { innerPadding ->
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = LETSSOPTColors.Background)
-                .padding(innerPadding)
-                .padding(20.dp)
+                .padding(paddingValues)
+                .padding(horizontal = 20.dp)
                 .imePadding()
         ) {
             Spacer(Modifier.weight(60f))
@@ -143,7 +105,7 @@ private fun LoginScreen(
             Spacer(Modifier.weight(36f))
 
             AuthTextField(
-                value = email,
+                value = uiState.email,
                 onValueChange = onEmailChange,
                 titleText = "이메일",
                 placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
@@ -156,7 +118,7 @@ private fun LoginScreen(
             Spacer(Modifier.weight(18f))
 
             AuthTextField(
-                value = password,
+                value = uiState.password,
                 onValueChange = onPasswordChange,
                 titleText = "비밀번호",
                 placeholder = "8~12자의 비밀번호를 입력해주세요!",
@@ -186,17 +148,28 @@ private fun LoginScreen(
 
             SubmitButton(
                 text = "로그인",
-                enabled = true,
+                enabled = uiState.isLoginButtonEnabled,
                 onClick = onSignInClick
             )
+
         }
-    }
+
 }
 
 @Preview
 @Composable
 private fun LoginScreenPreview() {
     LETSSOPTTheme {
-//        LoginScreen(viewModel = LoginViewModel())
+        LoginScreen(
+            uiState = LoginUiState(
+                email = "sopt@sopt.org",
+                password = "12345678"
+            ),
+            paddingValues = PaddingValues(),
+            onEmailChange = {},
+            onPasswordChange = {},
+            onSignInClick = {},
+            onSignUpClick = {}
+        )
     }
 }
