@@ -9,7 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.presentation.auth.navigation.authNavGraph
 import com.example.letssopt.presentation.finder.navigation.finderNavGraph
+import com.example.letssopt.presentation.home.navigation.Home
 import com.example.letssopt.presentation.home.navigation.homeNavFGraph
 import com.example.letssopt.presentation.main.component.MainBottomBar
 import com.example.letssopt.presentation.purchase.navigation.purchaseNavGraph
@@ -30,7 +32,8 @@ fun MainScreen(appState: MainAppState) {
                 }
             )
         }
-    ) { innerPadding ->
+    ) {
+        innerPadding ->
         NavHost(
             navController = appState.navController,
             startDestination = appState.startDestination,
@@ -49,7 +52,10 @@ fun MainScreen(appState: MainAppState) {
 
             webtoonNavGraph(paddingValues = innerPadding)
 
-
+            authNavGraph(
+                paddingValues = innerPadding,
+                navController = appState.navController,
+                )
         }
     }
 
@@ -61,7 +67,9 @@ fun MainScreen(appState: MainAppState) {
 @Composable
 private fun MainScreenPreview() {
     LETSSOPTTheme {
-        val appState = rememberMainAppState()
+        val appState = rememberMainAppState(
+            startDestination = Home
+        )
         MainScreen(appState = appState)
     }
 }
