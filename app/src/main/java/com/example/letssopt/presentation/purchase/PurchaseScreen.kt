@@ -2,6 +2,7 @@ package com.example.letssopt.presentation.purchase
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,40 +58,49 @@ private fun PurchaseScreen(
     onSaveClick: (ContentItemModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Text(
-        text = "개별 구매",
-        modifier = Modifier.padding(16.dp),
-        color = LETSSOPTColors.TextPrimary,
-        style = typography.h3
-    )
+    Column(modifier = modifier.fillMaxSize().background(Color.Black),) {
 
-    Spacer(modifier =Modifier.height(40.dp))
+        Spacer(modifier =Modifier.weight(70f))
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = modifier
-            .fillMaxSize()
-            .padding(paddingValues = innerPadding)
-            .background(Color.Black),
-        contentPadding = PaddingValues(vertical = 30.dp, horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(28.dp)
-    ) {
+        Text(
+            text = "개별 구매",
+            modifier = Modifier.padding(16.dp),
+            color = LETSSOPTColors.TextPrimary,
+            style = typography.h3
+        )
 
-        items(
-            items = uiState.items,
-            key = { item -> item.id }
-        ) { item ->
-            PurchaseHistoryPosterCard(
-                title = item.title,
-                imageRes = item.imageRes,
-                isSaved = uiState.savedItemIds.contains(item.id),
-                onPosterClick = { onContentClick(item) },
-                onSaveClick = { onSaveClick(item) },
-                modifier = Modifier.fillMaxSize()
-            )
+        Spacer(modifier =Modifier.weight(45f))
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = Modifier
+                .padding(paddingValues = innerPadding),
+
+            contentPadding = PaddingValues(vertical = 30.dp, horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(28.dp)
+        ) {
+
+            items(
+                items = uiState.items,
+                key = { item -> item.id }
+            ) { item ->
+                PurchaseHistoryPosterCard(
+                    title = item.title,
+                    imageRes = item.imageRes,
+                    isSaved = uiState.savedItemIds.contains(item.id),
+                    onPosterClick = { onContentClick(item) },
+                    onSaveClick = { onSaveClick(item) },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
+
+        Spacer(modifier =Modifier.weight(181f))
+
     }
+
+
 }
 
 @Preview
