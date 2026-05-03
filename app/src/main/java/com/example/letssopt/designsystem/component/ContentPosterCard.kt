@@ -2,6 +2,7 @@ package com.example.letssopt.designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,14 +19,14 @@ import com.example.letssopt.presentation.home.HomeFakeData
 import com.example.letssopt.presentation.home.model.ContentItemModel
 
 @Composable
- fun ContentPosterCard(
+fun ContentPosterCard(
     item: ContentItemModel,
     onContentClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    overlay: @Composable BoxScope.() -> Unit = {}
 ) {
     Box(
         modifier = modifier
-            .width(100.dp)
             .aspectRatio(2f / 3f)
             .clip(RoundedCornerShape(10.dp))
             .noRippleClickable(onClick = onContentClick)
@@ -36,6 +37,8 @@ import com.example.letssopt.presentation.home.model.ContentItemModel
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.Crop
         )
+
+        overlay()
     }
 }
 
@@ -45,7 +48,8 @@ private fun ContentPosterCardPreview() {
     LETSSOPTTheme {
         ContentPosterCard(
             item = HomeFakeData.upcomingContentData.first(),
-            onContentClick = {}
+            onContentClick = {},
+            modifier = Modifier.width(100.dp)
         )
     }
 }
