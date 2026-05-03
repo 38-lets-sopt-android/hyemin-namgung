@@ -23,7 +23,8 @@ class FinderViewModel(
                 _uiState.value = FinderUiState(
                     wishlistItems = purchaseList
                         .map(PurchaseHistory::toContentItemModel)
-                        .toImmutableList()
+                        .toImmutableList(),
+                    isLoading = false
                 )
             }
         }

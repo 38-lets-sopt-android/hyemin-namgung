@@ -55,6 +55,7 @@ private fun FinderScreen(
 
         WishlistSection(
             items = uiState.wishlistItems,
+            isLoading = uiState.isLoading,
             onContentClick = onContentClick,
             onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(innerPadding)
@@ -70,7 +71,8 @@ private fun FinderScreenPreview() {
     LETSSOPTTheme {
         FinderScreen(
             uiState = FinderUiState(
-                wishlistItems = HomeFakeData.upcomingContentData
+                wishlistItems = HomeFakeData.upcomingContentData,
+                isLoading = false
             ),
             innerPadding = PaddingValues(),
             onContentClick = {},
