@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.local.database.AppDatabase
 import com.example.letssopt.presentation.home.HomeFakeData
 import com.example.letssopt.presentation.home.model.ContentItemModel
 import com.example.letssopt.presentation.finder.component.WishlistSection
@@ -19,8 +22,14 @@ import com.example.letssopt.presentation.finder.component.WishlistSection
 @Composable
 fun FinderRoute(
     paddingValues: PaddingValues,
-    viewModel: FinderViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val purchaseDao = remember(context) {
+        AppDatabase.getDatabase(context).purchaseDao()
+    }
+    val viewModel: FinderViewModel = viewModel(
+        factory = FinderViewModelFactory(purchaseDao)
+    )
     val uiState by viewModel.uiState.collectAsState()
 
     FinderScreen(
