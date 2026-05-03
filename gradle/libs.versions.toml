@@ -13,7 +13,7 @@ runtime = "1.10.6"
 kotlinxImmutable = "0.4.0"
 androidxComposeNavigation = "2.9.7"
 kotlinxSerializationJson = "1.9.0"
-ksp = "2.0.21-1.0.28"
+ksp = "2.1.20-1.0.31"
 room = "2.8.4"
 
 [libraries]
