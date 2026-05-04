@@ -25,6 +25,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun WishlistSection(
     items: ImmutableList<ContentItemModel>,
+    isLoading: Boolean,
     onContentClick: (ContentItemModel) -> Unit,
     onDeleteClick: (ContentItemModel) -> Unit,
     modifier: Modifier = Modifier,
@@ -42,7 +43,7 @@ fun WishlistSection(
             color = LETSSOPTColors.TextPrimary
         )
 
-        if (items.isEmpty()) {
+        if (!isLoading && items.isEmpty()) {
             EmptyWishlist(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -81,6 +82,7 @@ fun WishlistSection(
 private fun WishlistSectionPreview() {
     WishlistSection(
         items = HomeFakeData.upcomingContentData,
+        isLoading = false,
         onContentClick = {},
         onDeleteClick = {}
     )
@@ -92,6 +94,7 @@ private fun EmptyWishlistSectionPreview() {
     LETSSOPTTheme {
         WishlistSection(
             items = persistentListOf(),
+            isLoading = false,
             onContentClick = {},
             onDeleteClick = {},
             modifier = Modifier.fillMaxSize()

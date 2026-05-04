@@ -1,4 +1,4 @@
-package com.example.letssopt.presentation.signup
+package com.example.letssopt.presentation.auth.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

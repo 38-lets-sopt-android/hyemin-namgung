@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -49,7 +50,7 @@ fun UpcomingSection(
 
             Text(
                 text = "더보기",
-                modifier= Modifier.noRippleClickable(onClick = { onMoreClick }),
+                modifier= Modifier.noRippleClickable(onClick = onMoreClick),
                 color = LETSSOPTColors.TextSecondary,
                 style = typography.caption1
 
@@ -69,7 +70,9 @@ fun UpcomingSection(
             ) { item ->
                 ContentPosterCard(
                     item = item,
-                    onContentClick = { onContentClick })
+                    onContentClick = onContentClick,
+                    modifier = Modifier.width(100.dp)
+                )
             }
         }
     }
