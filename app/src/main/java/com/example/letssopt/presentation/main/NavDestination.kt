@@ -9,12 +9,12 @@ import com.example.letssopt.presentation.purchase.navigation.Purchase
 import com.example.letssopt.presentation.search.navigation.Search
 import com.example.letssopt.presentation.webtoon.navigation.Webtoon
 
-enum class MainTab(
+enum class NavDestination(
     @DrawableRes val iconRes: Int,
     val route: MainTabRoute,
     val label: String
 ) {
-    HONE(
+    HOME(
         iconRes = R.drawable.ic_logo,
         route = Home,
         label = "메인"

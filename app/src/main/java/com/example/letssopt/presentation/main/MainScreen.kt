@@ -25,7 +25,7 @@ fun MainScreen(appState: MainAppState) {
     Scaffold(
         bottomBar = {
             MainBottomBar(
-                tabs = MainTab.entries.toPersistentList(),
+                tabs = NavDestination.entries.toPersistentList(),
                 currentTab = currentTab,
                 onTabSelected = { tab ->
                     appState.navigate(tab)
