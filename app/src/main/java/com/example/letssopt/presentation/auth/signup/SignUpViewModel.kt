@@ -16,6 +16,12 @@ class SignUpViewModel(
     private val preferences: UserPreferences
 ) : ViewModel() {
 
+    companion object {
+        private val EMAIL_REGEX =
+            Regex("^[A-Za-z0-9](?:[A-Za-z0-9._%+-]*[A-Za-z0-9])?@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\\.[A-Za-z]{2,}$")
+        private val PASSWORD_REGEX = Regex("^.{8,12}$")
+    }
+
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
 
@@ -43,7 +49,7 @@ class SignUpViewModel(
     fun onSignUpClick() {
         viewModelScope.launch {
             
-            if (isValidSignUp()) {
+            if (isSignUpValid()) {
                 saveUserInfo()
                 _sideEffect.emit(
                     SignUpSideEffect.SignUpSuccess
@@ -57,24 +63,20 @@ class SignUpViewModel(
         }
     }
 
-    fun isVerifyEmail(): Boolean {
-        val emailRegex =
-            Regex("^[A-Za-z0-9](?:[A-Za-z0-9._%+-]*[A-Za-z0-9])?@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\\.[A-Za-z]{2,}$")
-        return emailRegex.matches(_uiState.value.email)
+    private fun isEmailValid(): Boolean {
+        return EMAIL_REGEX.matches(_uiState.value.email)
     }
 
-    private fun isVerifyPassword(): Boolean {
-        val passwordRegex = Regex("^.{8,12}$")
-
-        return passwordRegex.matches(_uiState.value.password)
+    private fun isPasswordValid(): Boolean {
+        return PASSWORD_REGEX.matches(_uiState.value.password)
     }
 
-    private fun isSamePassword(): Boolean {
+    private fun isPasswordSame(): Boolean {
         return _uiState.value.password == _uiState.value.confirmPassword
     }
 
-    private fun isValidSignUp(): Boolean {
-        return isVerifyEmail() && isVerifyPassword() && isSamePassword()
+    private fun isSignUpValid(): Boolean {
+        return isEmailValid() && isPasswordValid() && isPasswordSame()
     }
 
     private fun saveUserInfo() {
