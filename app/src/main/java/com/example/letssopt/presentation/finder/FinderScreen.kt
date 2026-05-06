@@ -6,45 +6,77 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.common.navigation.MainTabRoute
+import com.example.letssopt.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.local.database.AppDatabase
+import com.example.letssopt.presentation.home.HomeFakeData
+import com.example.letssopt.presentation.home.model.ContentItemModel
 import com.example.letssopt.presentation.finder.component.WishlistSection
-import kotlinx.serialization.Serializable
-
-@Serializable
-data object Finder : MainTabRoute
 
 @Composable
-fun FinderScreen(
-    innerPadding: PaddingValues,
-    modifier: Modifier = Modifier,
-    viewModel: FinderViewModel = viewModel()
+fun FinderRoute(
+    paddingValues: PaddingValues,
 ) {
+    val context = LocalContext.current
+    val purchaseDao = remember(context) {
+        AppDatabase.getDatabase(context).purchaseDao()
+    }
+    val viewModel: FinderViewModel = viewModel(
+        factory = FinderViewModelFactory(purchaseDao)
+    )
     val uiState by viewModel.uiState.collectAsState()
 
+    FinderScreen(
+        uiState = uiState,
+        innerPadding = paddingValues,
+        onContentClick = {},
+        onDeleteClick = viewModel::deleteWishlistItem
+    )
+}
+
+@Composable
+private fun FinderScreen(
+    uiState: FinderUiState,
+    innerPadding: PaddingValues,
+    onContentClick: (ContentItemModel) -> Unit,
+    onDeleteClick: (ContentItemModel) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         Spacer(Modifier.weight(70f))
 
         WishlistSection(
-            items = uiState.wishlistitems,
-            onContentClick = {},
-            onDeleteClick = viewModel::deleteWishlistItem,
+            items = uiState.wishlistItems,
+            isLoading = uiState.isLoading,
+            onContentClick = onContentClick,
+            onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(innerPadding)
         )
 
         Spacer(Modifier.weight(193f))
     }
-
 }
 
 @Preview
 @Composable
 private fun FinderScreenPreview() {
-    FinderScreen(innerPadding = PaddingValues())
+    LETSSOPTTheme {
+        FinderScreen(
+            uiState = FinderUiState(
+                wishlistItems = HomeFakeData.upcomingContentData,
+                isLoading = false
+            ),
+            innerPadding = PaddingValues(),
+            onContentClick = {},
+            onDeleteClick = {}
+        )
+    }
 }

@@ -5,6 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.local.UserPreferences
+import com.example.letssopt.presentation.auth.navigation.Auth
+import com.example.letssopt.presentation.home.navigation.Home
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,9 +15,14 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
+        val pref = UserPreferences(this)
+        val startDestination = if (pref.getAutoLogin()) Home else Auth
+
         setContent {
             LETSSOPTTheme {
-                val appState = rememberMainAppState()
+                val appState = rememberMainAppState(
+                    startDestination = startDestination
+                )
                 MainScreen(appState = appState)
             }
         }

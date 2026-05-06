@@ -3,18 +3,18 @@ package com.example.letssopt.presentation.main
 import androidx.annotation.DrawableRes
 import com.example.letssopt.R
 import com.example.letssopt.common.navigation.MainTabRoute
-import com.example.letssopt.presentation.finder.Finder
-import com.example.letssopt.presentation.home.Home
-import com.example.letssopt.presentation.purchase.Purchase
-import com.example.letssopt.presentation.search.Search
-import com.example.letssopt.presentation.webtoon.Webtoon
+import com.example.letssopt.presentation.finder.navigation.Finder
+import com.example.letssopt.presentation.home.navigation.Home
+import com.example.letssopt.presentation.purchase.navigation.Purchase
+import com.example.letssopt.presentation.search.navigation.Search
+import com.example.letssopt.presentation.webtoon.navigation.Webtoon
 
-enum class MainTab(
+enum class NavDestination(
     @DrawableRes val iconRes: Int,
     val route: MainTabRoute,
     val label: String
 ) {
-    HONE(
+    HOME(
         iconRes = R.drawable.ic_logo,
         route = Home,
         label = "메인"

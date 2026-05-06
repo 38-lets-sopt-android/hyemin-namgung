@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
@@ -83,7 +84,9 @@ fun WatgorithmSection(
             ) { item ->
                 ContentPosterCard(
                     item = item,
-                    onContentClick = { onContentClick })
+                    onContentClick = onContentClick,
+                    modifier = Modifier.width(100.dp)
+                )
             }
         }
     }

@@ -11,32 +11,33 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.R
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.letssopt.common.modifier.noRippleClickable
 import com.example.letssopt.designsystem.theme.LETSSOPTColors
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.LETSSOPTTypography
 import com.example.letssopt.designsystem.theme.typography
-import kotlinx.collections.immutable.ImmutableList
-import com.example.letssopt.presentation.main.MainTab
-import kotlinx.collections.immutable.toPersistentList
+import com.example.letssopt.presentation.home.navigation.Home
+import com.example.letssopt.presentation.main.MainAppState
+import com.example.letssopt.presentation.main.NavDestination
+import com.example.letssopt.presentation.main.rememberMainAppState
 
 @Composable
 fun MainBottomBar(
-    tabs: ImmutableList<MainTab>,
-    currentTab: MainTab?,
-    onTabSelected: (MainTab) -> Unit,
+    appState: MainAppState,
     modifier: Modifier = Modifier
 ) {
+    val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -45,12 +46,12 @@ fun MainBottomBar(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        tabs.forEach { tab ->
+        NavDestination.entries.forEach { tab ->
             key(tab.route) {
                 MainBottomBarItem(
                     tab = tab,
-                    selected = (tab == currentTab),
-                    onClick = { onTabSelected(tab) }
+                    selected = currentDestination?.hasRoute(tab.route::class) == true,
+                    onClick = { appState.navigate(tab) }
                 )
             }
 
@@ -60,12 +61,13 @@ fun MainBottomBar(
 
 @Composable
 private fun RowScope.MainBottomBarItem(
-    tab: MainTab,
+    tab: NavDestination,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .weight(1f)
             .noRippleClickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -92,10 +94,7 @@ private fun RowScope.MainBottomBarItem(
 @Composable
 private fun MainBottomBarPreview() {
     LETSSOPTTheme {
-        MainBottomBar(
-            tabs = MainTab.entries.toList().toPersistentList(),
-            currentTab = MainTab.HONE,
-            onTabSelected = {}
-        )
+        val appState = rememberMainAppState(startDestination = Home)
+        MainBottomBar(appState = appState)
     }
 }

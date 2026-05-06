@@ -8,14 +8,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.letssopt.common.navigation.MainTabRoute
-import kotlinx.serialization.Serializable
-
-@Serializable
-data object Webtoon : MainTabRoute
 
 @Composable
-fun WebtoonScreen(innerPadding: PaddingValues) {
+fun WebtoonRoute(paddingValues: PaddingValues){
+    WebtoonScreen(
+        innerPadding = paddingValues
+    )
+}
+
+@Composable
+private fun WebtoonScreen(innerPadding: PaddingValues) {
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -2,6 +2,7 @@ package com.example.letssopt.presentation.finder.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +31,8 @@ fun WishlistPosterCard(
         horizontalAlignment = Alignment.CenterHorizontally) {
         ContentPosterCard(
             item = item,
-            onContentClick = onContentClick
+            onContentClick = onContentClick,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Icon(

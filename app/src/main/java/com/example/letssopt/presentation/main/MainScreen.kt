@@ -8,19 +8,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.presentation.finder.Finder
-import com.example.letssopt.presentation.finder.FinderScreen
-import com.example.letssopt.presentation.home.Home
-import com.example.letssopt.presentation.home.HomeScreen
+import com.example.letssopt.presentation.auth.navigation.authNavGraph
+import com.example.letssopt.presentation.finder.navigation.finderNavGraph
+import com.example.letssopt.presentation.home.navigation.Home
+import com.example.letssopt.presentation.home.navigation.homeNavFGraph
 import com.example.letssopt.presentation.main.component.MainBottomBar
-import com.example.letssopt.presentation.purchase.Purchase
-import com.example.letssopt.presentation.purchase.PurchaseScreen
-import com.example.letssopt.presentation.search.Search
-import com.example.letssopt.presentation.search.SearchScreen
-import com.example.letssopt.presentation.webtoon.Webtoon
-import com.example.letssopt.presentation.webtoon.WebtoonScreen
+import com.example.letssopt.presentation.purchase.navigation.purchaseNavGraph
+import com.example.letssopt.presentation.search.navigation.searchNavGraph
+import com.example.letssopt.presentation.webtoon.navigation.webtoonNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -29,7 +25,7 @@ fun MainScreen(appState: MainAppState) {
     Scaffold(
         bottomBar = {
             MainBottomBar(
-                tabs = MainTab.entries.toPersistentList(),
+                tabs = NavDestination.entries.toPersistentList(),
                 currentTab = currentTab,
                 onTabSelected = { tab ->
                     appState.navigate(tab)
@@ -46,22 +42,20 @@ fun MainScreen(appState: MainAppState) {
             popEnterTransition = { EnterTransition.None },
             popExitTransition = { ExitTransition.None }
         ) {
-            composable<Home> {
-                HomeScreen(innerPadding)
-            }
-            composable<Purchase> {
-                PurchaseScreen(innerPadding)
-            }
-            composable<Webtoon> {
-                WebtoonScreen(innerPadding)
-            }
-            composable<Search> {
-                SearchScreen(innerPadding)
-            }
-            composable<Finder> {
-                FinderScreen(innerPadding)
-            }
+            finderNavGraph(paddingValues = innerPadding)
 
+            homeNavFGraph(paddingValues = innerPadding )
+
+            purchaseNavGraph(paddingValues = innerPadding)
+
+            searchNavGraph(paddingValues = innerPadding)
+
+            webtoonNavGraph(paddingValues = innerPadding)
+
+            authNavGraph(
+                paddingValues = innerPadding,
+                navController = appState.navController,
+                )
         }
     }
 
@@ -73,7 +67,9 @@ fun MainScreen(appState: MainAppState) {
 @Composable
 private fun MainScreenPreview() {
     LETSSOPTTheme {
-        val appState = rememberMainAppState()
+        val appState = rememberMainAppState(
+            startDestination = Home
+        )
         MainScreen(appState = appState)
     }
 }
