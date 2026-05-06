@@ -27,12 +27,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.designsystem.component.AuthTextField
-import com.example.letssopt.designsystem.component.SubmitButton
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.typography
-import com.example.letssopt.local.UserPreferences
+import com.example.letssopt.core.designsystem.component.AuthTextField
+import com.example.letssopt.core.designsystem.component.SubmitButton
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.core.designsystem.theme.typography
+import com.example.letssopt.data.local.UserPreferences
 
 @Composable
 fun SignUpRoute(

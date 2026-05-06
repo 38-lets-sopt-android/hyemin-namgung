@@ -2,7 +2,7 @@ package com.example.letssopt.presentation.purchase
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.letssopt.local.purchase.dao.PurchaseDao
+import com.example.letssopt.data.local.purchase.dao.PurchaseDao
 
 class PurchaseViewModelFactory(
     private val purchaseDao: PurchaseDao

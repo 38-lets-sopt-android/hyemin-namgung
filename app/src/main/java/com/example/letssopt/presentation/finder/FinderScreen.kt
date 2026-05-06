@@ -13,9 +13,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.local.database.AppDatabase
-import com.example.letssopt.presentation.home.HomeFakeData
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.data.local.database.AppDatabase
+import com.example.letssopt.data.mock.AppMockData
 import com.example.letssopt.presentation.home.model.ContentItemModel
 import com.example.letssopt.presentation.finder.component.WishlistSection
 
@@ -71,7 +71,7 @@ private fun FinderScreenPreview() {
     LETSSOPTTheme {
         FinderScreen(
             uiState = FinderUiState(
-                wishlistItems = HomeFakeData.upcomingContentData,
+                wishlistItems = AppMockData.upcomingContentData,
                 isLoading = false
             ),
             innerPadding = PaddingValues(),

@@ -1,11 +1,11 @@
-package com.example.letssopt.local.database
+package com.example.letssopt.data.local.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.letssopt.local.purchase.dao.PurchaseDao
-import com.example.letssopt.local.purchase.entity.PurchaseHistory
+import com.example.letssopt.data.local.purchase.dao.PurchaseDao
+import com.example.letssopt.data.local.purchase.entity.PurchaseHistory
 import kotlin.concurrent.Volatile
 
 @Database(entities = [PurchaseHistory::class], version = 1)

@@ -1,4 +1,4 @@
-package com.example.letssopt.designsystem.component
+package com.example.letssopt.core.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.common.modifier.noRippleClickable
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.typography
+import com.example.letssopt.core.common.modifier.noRippleClickable
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.typography
 
 @Composable
 fun SubmitButton(

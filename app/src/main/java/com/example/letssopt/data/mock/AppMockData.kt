@@ -1,11 +1,44 @@
-package com.example.letssopt.presentation.home
+package com.example.letssopt.data.mock
 
 import com.example.letssopt.R
 import com.example.letssopt.presentation.home.model.ContentItemModel
 import com.example.letssopt.presentation.home.model.WatchaPartyModel
 import kotlinx.collections.immutable.persistentListOf
 
-object HomeFakeData {
+object AppMockData {
+    val contentsData = persistentListOf(
+        ContentItemModel(
+            id = 4L,
+            title = "이 사랑 통역? 되나요",
+            imageRes = R.drawable.img_love_translation
+        ),
+        ContentItemModel(
+            id = 5L,
+            title = "스트레인저 5",
+            imageRes = R.drawable.img_stranger_things_5
+        ),
+        ContentItemModel(
+            id = 6L,
+            title = "프로젝트 헤일메리",
+            imageRes = R.drawable.img_projecthailmary
+        ),
+        ContentItemModel(
+            id = 1L,
+            title = "매니페스트",
+            imageRes = R.drawable.img_manifest
+        ),
+        ContentItemModel(
+            id = 2L,
+            title = "크라임씬 리턴즈",
+            imageRes = R.drawable.img_crimescene
+        ),
+        ContentItemModel(
+            id = 3L,
+            title = "폭삭 속았수다",
+            imageRes = R.drawable.img_poksak_sokassuda
+        )
+    )
+
     val newContentsData = persistentListOf(
         ContentItemModel(
             id = 1L,
@@ -44,6 +77,21 @@ object HomeFakeData {
             id = 7L,
             title = "이 사랑 통역? 되나요",
             imageRes = R.drawable.img_love_translation
+        ),
+        ContentItemModel(
+            id = 12L,
+            title = "왕과사는 남자",
+            imageRes = R.drawable.img_king_and_man
+        ),
+        ContentItemModel(
+            id = 13L,
+            title = "파묘",
+            imageRes = R.drawable.img_exhuma
+        ),
+        ContentItemModel(
+            id = 14L,
+            title = "왕과사는 남자",
+            imageRes = R.drawable.img_king_and_man
         ),
     )
 
@@ -90,5 +138,5 @@ object HomeFakeData {
             imageRes = R.drawable.img_king_and_man
         ),
 
-    )
+        )
 }

@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.typography
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.core.designsystem.theme.typography
 
 @Composable
 fun EmptyWishlist(

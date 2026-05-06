@@ -2,7 +2,7 @@ package com.example.letssopt.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.letssopt.local.UserPreferences
+import com.example.letssopt.data.local.UserPreferences
 
 class LoginViewModelFactory(
     private val preferences: UserPreferences

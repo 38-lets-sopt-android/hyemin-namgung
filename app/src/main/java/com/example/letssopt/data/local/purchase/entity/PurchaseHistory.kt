@@ -1,4 +1,4 @@
-package com.example.letssopt.local.purchase.entity
+package com.example.letssopt.data.local.purchase.entity
 
 import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo

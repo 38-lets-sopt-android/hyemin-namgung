@@ -23,11 +23,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.common.modifier.noRippleClickable
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.typography
-import com.example.letssopt.presentation.home.HomeFakeData
+import com.example.letssopt.core.common.modifier.noRippleClickable
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.core.designsystem.theme.typography
+import com.example.letssopt.data.mock.AppMockData
 import com.example.letssopt.presentation.home.model.ContentItemModel
 import kotlinx.collections.immutable.ImmutableList
 
@@ -116,6 +116,7 @@ private fun NewContentCard(
 @Composable
 private fun NewContentSectionPreview() {
     LETSSOPTTheme {
-        NewContentSection(contents = HomeFakeData.newContentsData, onContentClick = { })
+        NewContentSection(contents =
+            AppMockData.newContentsData, onContentClick = { })
     }
 }

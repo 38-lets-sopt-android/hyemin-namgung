@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -23,11 +21,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.typography
-import com.example.letssopt.local.database.AppDatabase
-import com.example.letssopt.presentation.home.HomeFakeData
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.core.designsystem.theme.typography
+import com.example.letssopt.data.local.database.AppDatabase
+import com.example.letssopt.data.mock.AppMockData
 import com.example.letssopt.presentation.home.model.ContentItemModel
 import com.example.letssopt.presentation.purchase.component.PurchaseHistoryPosterCard
 
@@ -109,8 +107,8 @@ private fun PurchaseScreenPreview() {
     LETSSOPTTheme {
         PurchaseScreen(
             uiState = PurchaseUiState(
-                items = HomeFakeData.watgorithmData,
-                savedItemIds = setOf(HomeFakeData.watgorithmData.first().id)
+                items = AppMockData.watgorithmData,
+                savedItemIds = setOf(AppMockData.watgorithmData.first().id)
             ),
             innerPadding = PaddingValues(),
             onContentClick = {},

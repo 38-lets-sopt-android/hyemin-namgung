@@ -15,12 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.common.modifier.noRippleClickable
-import com.example.letssopt.designsystem.component.ContentPosterCard
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.typography
-import com.example.letssopt.presentation.home.HomeFakeData
+import com.example.letssopt.core.common.modifier.noRippleClickable
+import com.example.letssopt.core.designsystem.component.ContentPosterCard
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.core.designsystem.theme.typography
+import com.example.letssopt.data.mock.AppMockData
 import com.example.letssopt.presentation.home.model.ContentItemModel
 import kotlinx.collections.immutable.ImmutableList
 
@@ -83,7 +83,7 @@ fun UpcomingSection(
 private fun  UpcomingSectionPreview(
 ) {
     LETSSOPTTheme {
-        UpcomingSection(contents = HomeFakeData.upcomingContentData, onContentClick = {}, onMoreClick = {})
+        UpcomingSection(contents = AppMockData.upcomingContentData, onContentClick = {}, onMoreClick = {})
     }
 
 }

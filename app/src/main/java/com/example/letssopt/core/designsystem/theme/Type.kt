@@ -1,4 +1,4 @@
-package com.example.letssopt.designsystem.theme
+package com.example.letssopt.core.designsystem.theme
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
@@ -7,7 +7,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.R
-import org.w3c.dom.Text
 
 data class LETSSOPTTypography(
     val logo: TextStyle,

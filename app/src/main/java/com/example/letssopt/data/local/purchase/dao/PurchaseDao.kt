@@ -1,10 +1,10 @@
-package com.example.letssopt.local.purchase.dao
+package com.example.letssopt.data.local.purchase.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.letssopt.local.purchase.entity.PurchaseHistory
+import com.example.letssopt.data.local.purchase.entity.PurchaseHistory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
