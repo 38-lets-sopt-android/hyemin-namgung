@@ -21,15 +21,10 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun MainScreen(appState: MainAppState) {
-    val currentTab by appState.currentTab.collectAsState()
     Scaffold(
         bottomBar = {
             MainBottomBar(
-                tabs = NavDestination.entries.toPersistentList(),
-                currentTab = currentTab,
-                onTabSelected = { tab ->
-                    appState.navigate(tab)
-                }
+                appState = appState
             )
         }
     ) {
