@@ -28,9 +28,9 @@ class SignUpViewModel(
     private val _sideEffect = MutableSharedFlow<SignUpSideEffect>()
     val sideEffect: SharedFlow<SignUpSideEffect> = _sideEffect.asSharedFlow()
 
-    fun updateEmail(changeEmail: String) {
+    fun updateLoginId(changeLoginId : String){
         _uiState.update {
-            it.copy(email = changeEmail)
+            it.copy(loginId =  changeLoginId)
         }
     }
 
@@ -46,6 +46,29 @@ class SignUpViewModel(
         }
     }
 
+    fun updateName(changeName: String) {
+        _uiState.update {
+            it.copy(password = changeName)
+        }
+    }
+    fun updateEmail(changeEmail: String) {
+        _uiState.update {
+            it.copy(email = changeEmail)
+        }
+    }
+
+
+    fun updateAge(changeAge: String) {
+        _uiState.update {
+            it.copy(age = changeAge.filter(Char::isDigit))
+        }
+    }
+
+    fun updatePart(changePart: String) {
+        _uiState.update {
+            it.copy(part = changePart)
+        }
+    }
     fun onSignUpClick() {
         viewModelScope.launch {
             

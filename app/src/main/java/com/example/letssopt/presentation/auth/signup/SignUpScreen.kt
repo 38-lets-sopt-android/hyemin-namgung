@@ -65,9 +65,13 @@ fun SignUpRoute(
         uiState = uiState,
         paddingValues = paddingValues,
         snackbarHostState = snackbarHostState,
-        onEmailChange = viewModel::updateEmail,
+        onLoginIdChange = viewModel::updateLoginId,
         onPasswordChange = viewModel::updatePassword,
         onConfirmPasswordChange = viewModel::updateConfirmPassword,
+        onNameChange = viewModel::updateName,
+        onEmailChange = viewModel::updateEmail,
+        onAgeChange = viewModel::updateAge,
+        onPartChange = viewModel::updatePart,
         onSignUpClick = viewModel::onSignUpClick
     )
 
@@ -78,9 +82,13 @@ private fun SignUpScreen(
     uiState: SignUpUiState,
     paddingValues: PaddingValues,
     snackbarHostState: SnackbarHostState,
-    onEmailChange: (String) -> Unit,
+    onLoginIdChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
+    onNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onAgeChange: (String) -> Unit,
+    onPartChange: (String) -> Unit,
     onSignUpClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -119,22 +127,17 @@ private fun SignUpScreen(
                 color = LETSSOPTColors.TextPrimary
             )
 
-            Spacer(Modifier.weight(36f))
 
             AuthTextField(
-                value = uiState.email,
-                onValueChange = onEmailChange,
-                titleText = "이메일",
-                placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
+                value = uiState.loginId,
+                onValueChange = onLoginIdChange,
+                titleText = "아이디",
+                placeholder = "아이디를 입력해주세요",
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Email
+                    imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
-
-            Spacer(Modifier.weight(18f))
-
             AuthTextField(
                 value = uiState.password,
                 onValueChange = onPasswordChange,
@@ -156,14 +159,58 @@ private fun SignUpScreen(
                 titleText = "비밀번호 확인",
                 placeholder = "비밀번호를 다시 입력해주세요",
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
+                    imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Password
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
+            AuthTextField(
+                value = uiState.name,
+                onValueChange = onNameChange,
+                titleText = "이름",
+                placeholder = "이름을 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
+            AuthTextField(
+                value = uiState.email,
+                onValueChange = onEmailChange,
+                titleText = "이메일",
+                placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
 
-            Spacer(Modifier.weight(280f))
+            AuthTextField(
+                value = uiState.age,
+                onValueChange = onAgeChange,
+                titleText = "나이",
+                placeholder = "나이를 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+
+            // -> 추후 차라리 선택으로 하는게 어떨지 ,,
+            AuthTextField(
+                value = uiState.part,
+                onValueChange = onPartChange,
+                titleText = "파트",
+                placeholder = "파트를 선택해주세요 ex. 안드로이드, ios, 웹",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
 
             SubmitButton(
                 text = "회원가입",
@@ -184,13 +231,21 @@ private fun SignUpScreenPreview() {
             uiState = SignUpUiState(
                 email = "sopt@sopt.org",
                 password = "12345678",
-                confirmPassword = "12345678"
+                confirmPassword = "12345678",
+                loginId = "soptsopt",
+                name = "영크크",
+                age = "17",
+                part = "안드로이드"
             ),
             paddingValues = PaddingValues(),
             snackbarHostState = SnackbarHostState(),
-            onEmailChange = {},
+            onLoginIdChange = {},
             onPasswordChange = {},
             onConfirmPasswordChange = {},
+            onNameChange = {},
+            onEmailChange = {},
+            onAgeChange = {},
+            onPartChange = {},
             onSignUpClick = {},
         )
     }
