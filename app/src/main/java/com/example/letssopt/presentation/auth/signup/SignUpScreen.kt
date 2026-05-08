@@ -27,12 +27,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.letssopt.core.common.state.UiState
 import com.example.letssopt.core.designsystem.component.AuthTextField
 import com.example.letssopt.core.designsystem.component.SubmitButton
 import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.core.designsystem.theme.typography
 import com.example.letssopt.data.local.UserPreferences
+import com.example.letssopt.data.remote.RetrofitClient
+import com.example.letssopt.data.remote.datasourceImpl.SignUpDataSourceImpl
+import com.example.letssopt.data.repositoryImpl.SignUpRepositoryImpl
 
 @Composable
 fun SignUpRoute(
@@ -41,10 +45,16 @@ fun SignUpRoute(
 ) {
     val context = LocalContext.current
     val pref = remember { UserPreferences(context) }
-    val factory = remember { SignUpViewModelFactory(pref) }
+    val signUpRepository = remember {
+        SignUpRepositoryImpl(
+            signUpDataSource = SignUpDataSourceImpl(RetrofitClient.signUpService)
+        )
+    }
+    val factory = remember { SignUpViewModelFactory(pref, signUpRepository) }
     val viewModel: SignUpViewModel = viewModel(factory = factory)
 
     val uiState by viewModel.uiState.collectAsState()
+    val signUpUiState by viewModel.signUpUiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
@@ -61,19 +71,29 @@ fun SignUpRoute(
         }
     }
 
-    SignUpScreen(
-        uiState = uiState,
-        paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
-        onLoginIdChange = viewModel::updateLoginId,
-        onPasswordChange = viewModel::updatePassword,
-        onConfirmPasswordChange = viewModel::updateConfirmPassword,
-        onNameChange = viewModel::updateName,
-        onEmailChange = viewModel::updateEmail,
-        onAgeChange = viewModel::updateAge,
-        onPartChange = viewModel::updatePart,
-        onSignUpClick = viewModel::onSignUpClick
-    )
+    when (uiState) {
+        is UiState.Empty,
+        is UiState.Failure,
+        is UiState.Success -> {
+            SignUpScreen(
+                uiState = signUpUiState,
+                paddingValues = paddingValues,
+                snackbarHostState = snackbarHostState,
+                onLoginIdChange = viewModel::updateLoginId,
+                onPasswordChange = viewModel::updatePassword,
+                onConfirmPasswordChange = viewModel::updateConfirmPassword,
+                onNameChange = viewModel::updateName,
+                onEmailChange = viewModel::updateEmail,
+                onAgeChange = viewModel::updateAge,
+                onPartChange = viewModel::updatePart,
+                onSignUpClick = viewModel::onSignUpClick
+            )
+        }
+
+        is UiState.Loading -> {
+            Text(text = "Loading...")
+        }
+    }
 
 }
 
@@ -108,7 +128,7 @@ private fun SignUpScreen(
                 .imePadding()
 
         ) {
-            Spacer(Modifier.weight(60f))
+            Spacer(Modifier.weight(30f))
 
             Text(
                 text = "watcha",
@@ -127,7 +147,7 @@ private fun SignUpScreen(
                 color = LETSSOPTColors.TextPrimary
             )
 
-
+            Spacer(Modifier.weight(36f))
             AuthTextField(
                 value = uiState.loginId,
                 onValueChange = onLoginIdChange,
@@ -138,6 +158,7 @@ private fun SignUpScreen(
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
+            Spacer(Modifier.weight(18f))
             AuthTextField(
                 value = uiState.password,
                 onValueChange = onPasswordChange,
@@ -165,6 +186,9 @@ private fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
+
+            Spacer(Modifier.weight(18f))
+
             AuthTextField(
                 value = uiState.name,
                 onValueChange = onNameChange,
@@ -175,6 +199,9 @@ private fun SignUpScreen(
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
+
+            Spacer(Modifier.weight(18f))
+
             AuthTextField(
                 value = uiState.email,
                 onValueChange = onEmailChange,
@@ -186,6 +213,8 @@ private fun SignUpScreen(
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
+
+            Spacer(Modifier.weight(18f))
 
             AuthTextField(
                 value = uiState.age,
@@ -199,6 +228,7 @@ private fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
 
+            Spacer(Modifier.weight(18f))
 
             // -> 추후 차라리 선택으로 하는게 어떨지 ,,
             AuthTextField(
@@ -211,6 +241,8 @@ private fun SignUpScreen(
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
+
+            Spacer(Modifier.weight(48f))
 
             SubmitButton(
                 text = "회원가입",
