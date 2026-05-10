@@ -12,10 +12,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.R
-import com.example.letssopt.common.modifier.noRippleClickable
-import com.example.letssopt.designsystem.component.ContentPosterCard
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.presentation.home.HomeFakeData
+import com.example.letssopt.core.common.modifier.noRippleClickable
+import com.example.letssopt.core.designsystem.component.ContentPosterCard
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.data.mock.AppMockData
 import com.example.letssopt.presentation.home.model.ContentItemModel
 
 
@@ -49,7 +49,7 @@ fun WishlistPosterCard(
 private fun WishlistPosterCardPreview(){
     LETSSOPTTheme {
         WishlistPosterCard(
-            item = HomeFakeData.upcomingContentData.first(),
+            item = AppMockData.upcomingContentData.first(),
             onContentClick =  {},
             onDeleteClick = {}
         )

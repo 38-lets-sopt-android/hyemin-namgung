@@ -2,7 +2,7 @@ package com.example.letssopt.presentation.main
 
 import androidx.annotation.DrawableRes
 import com.example.letssopt.R
-import com.example.letssopt.common.navigation.MainTabRoute
+import com.example.letssopt.core.common.navigation.MainTabRoute
 import com.example.letssopt.presentation.finder.navigation.Finder
 import com.example.letssopt.presentation.home.navigation.Home
 import com.example.letssopt.presentation.purchase.navigation.Purchase

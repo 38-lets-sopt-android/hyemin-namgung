@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.letssopt.common.navigation.Route
+import com.example.letssopt.core.common.navigation.Route
 import com.example.letssopt.presentation.auth.login.LoginRoute
 import com.example.letssopt.presentation.auth.login.navigation.Login
 import com.example.letssopt.presentation.auth.signup.SignUpRoute

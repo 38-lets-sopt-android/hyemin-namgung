@@ -2,7 +2,7 @@ package com.example.letssopt.presentation.finder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.letssopt.local.purchase.dao.PurchaseDao
+import com.example.letssopt.data.local.purchase.dao.PurchaseDao
 
 class FinderViewModelFactory(
     private val purchaseDao: PurchaseDao

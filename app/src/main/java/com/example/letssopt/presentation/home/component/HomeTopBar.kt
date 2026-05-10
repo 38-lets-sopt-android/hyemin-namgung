@@ -15,9 +15,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.R
-import com.example.letssopt.common.modifier.noRippleClickable
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import kotlinx.collections.immutable.ImmutableList
+import com.example.letssopt.core.common.modifier.noRippleClickable
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable

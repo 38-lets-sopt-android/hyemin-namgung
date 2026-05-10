@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.letssopt.common.modifier.noRippleClickable
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.typography
+import com.example.letssopt.core.common.modifier.noRippleClickable
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.core.designsystem.theme.typography
 import com.example.letssopt.presentation.home.navigation.Home
 import com.example.letssopt.presentation.main.MainAppState
 import com.example.letssopt.presentation.main.NavDestination

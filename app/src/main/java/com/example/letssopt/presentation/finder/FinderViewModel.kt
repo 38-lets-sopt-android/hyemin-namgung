@@ -2,8 +2,8 @@ package com.example.letssopt.presentation.finder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.letssopt.local.purchase.dao.PurchaseDao
-import com.example.letssopt.local.purchase.entity.PurchaseHistory
+import com.example.letssopt.data.local.purchase.dao.PurchaseDao
+import com.example.letssopt.data.local.purchase.entity.PurchaseHistory
 import com.example.letssopt.presentation.home.model.ContentItemModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow

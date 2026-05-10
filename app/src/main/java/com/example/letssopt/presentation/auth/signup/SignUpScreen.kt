@@ -27,12 +27,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.designsystem.component.AuthTextField
-import com.example.letssopt.designsystem.component.SubmitButton
-import com.example.letssopt.designsystem.theme.LETSSOPTColors
-import com.example.letssopt.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.designsystem.theme.typography
-import com.example.letssopt.local.UserPreferences
+import com.example.letssopt.core.common.state.UiState
+import com.example.letssopt.core.designsystem.component.AuthDropdownField
+import com.example.letssopt.core.designsystem.component.AuthTextField
+import com.example.letssopt.core.designsystem.component.SubmitButton
+import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
+import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.core.designsystem.theme.typography
+import com.example.letssopt.data.local.UserPreferences
+import com.example.letssopt.data.remote.RetrofitClient
+import com.example.letssopt.data.remote.datasourceImpl.SignUpDataSourceImpl
+import com.example.letssopt.data.repositoryImpl.SignUpRepositoryImpl
+
+private val partOptions = Part.entries.map(Part::string)
 
 @Composable
 fun SignUpRoute(
@@ -41,10 +48,16 @@ fun SignUpRoute(
 ) {
     val context = LocalContext.current
     val pref = remember { UserPreferences(context) }
-    val factory = remember { SignUpViewModelFactory(pref) }
+    val signUpRepository = remember {
+        SignUpRepositoryImpl(
+            signUpDataSource = SignUpDataSourceImpl(RetrofitClient.signUpService)
+        )
+    }
+    val factory = remember { SignUpViewModelFactory(pref, signUpRepository) }
     val viewModel: SignUpViewModel = viewModel(factory = factory)
 
     val uiState by viewModel.uiState.collectAsState()
+    val signUpUiState by viewModel.signUpUiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
@@ -61,15 +74,29 @@ fun SignUpRoute(
         }
     }
 
-    SignUpScreen(
-        uiState = uiState,
-        paddingValues = paddingValues,
-        snackbarHostState = snackbarHostState,
-        onEmailChange = viewModel::updateEmail,
-        onPasswordChange = viewModel::updatePassword,
-        onConfirmPasswordChange = viewModel::updateConfirmPassword,
-        onSignUpClick = viewModel::onSignUpClick
-    )
+    when (uiState) {
+        is UiState.Empty,
+        is UiState.Failure,
+        is UiState.Success -> {
+            SignUpScreen(
+                uiState = signUpUiState,
+                paddingValues = paddingValues,
+                snackbarHostState = snackbarHostState,
+                onLoginIdChange = viewModel::updateLoginId,
+                onPasswordChange = viewModel::updatePassword,
+                onConfirmPasswordChange = viewModel::updateConfirmPassword,
+                onNameChange = viewModel::updateName,
+                onEmailChange = viewModel::updateEmail,
+                onAgeChange = viewModel::updateAge,
+                onPartChange = viewModel::updatePart,
+                onSignUpClick = viewModel::onSignUpClick
+            )
+        }
+
+        is UiState.Loading -> {
+            Text(text = "Loading...")
+        }
+    }
 
 }
 
@@ -78,9 +105,13 @@ private fun SignUpScreen(
     uiState: SignUpUiState,
     paddingValues: PaddingValues,
     snackbarHostState: SnackbarHostState,
-    onEmailChange: (String) -> Unit,
+    onLoginIdChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
+    onNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onAgeChange: (String) -> Unit,
+    onPartChange: (String) -> Unit,
     onSignUpClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -100,7 +131,7 @@ private fun SignUpScreen(
                 .imePadding()
 
         ) {
-            Spacer(Modifier.weight(60f))
+            Spacer(Modifier.weight(30f))
 
             Text(
                 text = "watcha",
@@ -122,13 +153,12 @@ private fun SignUpScreen(
             Spacer(Modifier.weight(36f))
 
             AuthTextField(
-                value = uiState.email,
-                onValueChange = onEmailChange,
-                titleText = "이메일",
-                placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
+                value = uiState.loginId,
+                onValueChange = onLoginIdChange,
+                titleText = "아이디",
+                placeholder = "아이디를 입력해주세요",
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Email
+                    imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -156,14 +186,66 @@ private fun SignUpScreen(
                 titleText = "비밀번호 확인",
                 placeholder = "비밀번호를 다시 입력해주세요",
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
+                    imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Password
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            Spacer(Modifier.weight(280f))
+            Spacer(Modifier.weight(18f))
+
+            AuthTextField(
+                value = uiState.name,
+                onValueChange = onNameChange,
+                titleText = "이름",
+                placeholder = "이름을 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Spacer(Modifier.weight(18f))
+
+            AuthTextField(
+                value = uiState.email,
+                onValueChange = onEmailChange,
+                titleText = "이메일",
+                placeholder = "이메일 주소를 입력해주세요 (ex.sopt@sopt.org)",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Spacer(Modifier.weight(18f))
+
+            AuthTextField(
+                value = uiState.age,
+                onValueChange = onAgeChange,
+                titleText = "나이",
+                placeholder = "나이를 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Spacer(Modifier.weight(18f))
+
+            AuthDropdownField(
+                value = uiState.part,
+                onValueChange = onPartChange,
+                titleText = "파트",
+                placeholder = "파트를 선택해주세요",
+                options = partOptions,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Spacer(Modifier.weight(60f))
 
             SubmitButton(
                 text = "회원가입",
@@ -171,7 +253,7 @@ private fun SignUpScreen(
                 onClick = onSignUpClick
             )
 
-            Spacer(Modifier.weight(26f))
+            Spacer(Modifier.weight(16f))
         }
     }
 }
@@ -184,13 +266,21 @@ private fun SignUpScreenPreview() {
             uiState = SignUpUiState(
                 email = "sopt@sopt.org",
                 password = "12345678",
-                confirmPassword = "12345678"
+                confirmPassword = "12345678",
+                loginId = "soptsopt",
+                name = "영크크",
+                age = "17",
+                part = "안드로이드"
             ),
             paddingValues = PaddingValues(),
             snackbarHostState = SnackbarHostState(),
-            onEmailChange = {},
+            onLoginIdChange = {},
             onPasswordChange = {},
             onConfirmPasswordChange = {},
+            onNameChange = {},
+            onEmailChange = {},
+            onAgeChange = {},
+            onPartChange = {},
             onSignUpClick = {},
         )
     }
