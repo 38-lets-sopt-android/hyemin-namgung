@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.core.common.state.UiState
+import com.example.letssopt.core.designsystem.component.AuthDropdownField
 import com.example.letssopt.core.designsystem.component.AuthTextField
 import com.example.letssopt.core.designsystem.component.SubmitButton
 import com.example.letssopt.core.designsystem.theme.LETSSOPTColors
@@ -37,6 +38,8 @@ import com.example.letssopt.data.local.UserPreferences
 import com.example.letssopt.data.remote.RetrofitClient
 import com.example.letssopt.data.remote.datasourceImpl.SignUpDataSourceImpl
 import com.example.letssopt.data.repositoryImpl.SignUpRepositoryImpl
+
+private val partOptions = Part.entries.map(Part::string)
 
 @Composable
 fun SignUpRoute(
@@ -148,6 +151,7 @@ private fun SignUpScreen(
             )
 
             Spacer(Modifier.weight(36f))
+
             AuthTextField(
                 value = uiState.loginId,
                 onValueChange = onLoginIdChange,
@@ -158,7 +162,9 @@ private fun SignUpScreen(
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
+
             Spacer(Modifier.weight(18f))
+
             AuthTextField(
                 value = uiState.password,
                 onValueChange = onPasswordChange,
@@ -230,19 +236,16 @@ private fun SignUpScreen(
 
             Spacer(Modifier.weight(18f))
 
-            // -> 추후 차라리 선택으로 하는게 어떨지 ,,
-            AuthTextField(
+            AuthDropdownField(
                 value = uiState.part,
                 onValueChange = onPartChange,
                 titleText = "파트",
-                placeholder = "파트를 선택해주세요 ex. 안드로이드, ios, 웹",
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                ),
+                placeholder = "파트를 선택해주세요",
+                options = partOptions,
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            Spacer(Modifier.weight(48f))
+            Spacer(Modifier.weight(60f))
 
             SubmitButton(
                 text = "회원가입",
@@ -250,7 +253,7 @@ private fun SignUpScreen(
                 onClick = onSignUpClick
             )
 
-            Spacer(Modifier.weight(26f))
+            Spacer(Modifier.weight(16f))
         }
     }
 }

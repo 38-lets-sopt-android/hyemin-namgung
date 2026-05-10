@@ -27,9 +27,8 @@ data class SignUpUiState(
 
 }
 
-// 추후 사용 해야겠다 ,,
 enum class Part(val string: String) {
     ANDROID("안드로이드"),
-    IOS("ios"),
+    IOS("iOS"),
     WEB("웹"),
 }

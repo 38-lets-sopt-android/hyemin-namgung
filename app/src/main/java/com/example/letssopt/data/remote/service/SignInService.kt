@@ -14,5 +14,4 @@ interface SignInService {
     @POST("api/v1/auth/signin")
     suspend fun postSignIn(@Body request : SignInRequestDto): BaseResponse<SignInResponseDto>
 
-
 }
