@@ -26,7 +26,7 @@ object RetrofitClient{
     private val instance: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(json.asConverterFactory("application/json; charset=UTF-8".toMediaType()))
         .build()
 
     val signUpService: SignUpService = instance.create(SignUpService::class.java)
